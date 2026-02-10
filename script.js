@@ -59,7 +59,7 @@ Second, even if these tools never determine a single final grade, the ethical pr
 Third, without clear, enforced guidelines on appropriate use, "learning tools" inevitably become grading tools in practice. Once purchased, there's institutional pressure to justify the expense and expand usage.`
 };
 
-// Generate letter function
+// Generate letter function - now opens mailto
 function generateLetter() {
     const name = document.getElementById('name').value.trim();
     const role = document.getElementById('role').value;
@@ -107,11 +107,17 @@ Sincerely,
 ${name}
 ${role}`;
 
-    // Display the letter
+    // Create mailto link
+    const subject = encodeURIComponent('Opposition to AI Funding in Amity Schools');
+    const body = encodeURIComponent(letter);
+    const mailtoLink = `mailto:boardofed@amityregion5.org?subject=${subject}&body=${body}`;
+    
+    // Open mailto
+    window.location.href = mailtoLink;
+    
+    // Also display the letter for reference
     document.getElementById('letterContent').textContent = letter;
     document.getElementById('letterOutput').style.display = 'block';
-    
-    // Scroll to letter
     document.getElementById('letterOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -174,3 +180,58 @@ document.querySelectorAll('nav a').forEach(anchor => {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 });
+
+// Share Modal Functions
+const modal = document.getElementById('shareModal');
+const shareBtn = document.getElementById('shareBtn');
+const closeBtn = document.getElementsByClassName('close')[0];
+
+shareBtn.onclick = function() {
+    modal.style.display = 'block';
+}
+
+closeBtn.onclick = function() {
+    modal.style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function shareViaEmail() {
+    const subject = encodeURIComponent('URGENT: Stop AI Funding at Amity Schools');
+    const body = encodeURIComponent(`I just learned that Amity Regional High School is trying to fund AI grading tools that raise serious ethical, environmental, and educational concerns.
+
+Students are already getting incorrect grades from AI. OpenAI (the company behind these tools) is a major ICE contractor. The environmental impact is massive—equivalent to entire nations' energy consumption.
+
+We need to act NOW before the Board votes.
+
+Learn more and take action: https://keepamityhuman.org
+
+Please email the Board at boardofed@amityregion5.org and call Dr. Byars at 203-397-4830 ext. 4824.
+
+#KeepAmityHuman`);
+    
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    modal.style.display = 'none';
+}
+
+function shareViaSMS() {
+    const message = encodeURIComponent(`URGENT: Amity is trying to fund AI grading tools. Students getting wrong grades. OpenAI contracts with ICE. Massive environmental impact. ACT NOW: https://keepamityhuman.org Call Dr. Byars: 203-397-4830 ext 4824 #KeepAmityHuman`);
+    
+    window.location.href = `sms:?&body=${message}`;
+    modal.style.display = 'none';
+}
+
+function copyShareLink() {
+    const shareText = `URGENT: Amity is trying to fund AI grading tools. Students getting wrong grades. OpenAI contracts with ICE. Massive environmental impact. Learn more and take action: https://keepamityhuman.org #KeepAmityHuman`;
+    
+    navigator.clipboard.writeText(shareText).then(() => {
+        alert('Share message copied to clipboard! Paste it anywhere to spread the word.');
+        modal.style.display = 'none';
+    }).catch(err => {
+        alert('Failed to copy. Please copy this manually:\n\n' + shareText);
+    });
+}
