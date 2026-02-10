@@ -89,7 +89,7 @@
 
         <section id="email" class="section">
             <h2>FIGHT BACK: Send Your Letter NOW</h2>
-            <p class="urgent">The Board needs to hear from you IMMEDIATELY. Create your letter, send it TODAY, and make sure they know this community will NOT stand for this.</p>
+            <p class="urgent">The Board needs to hear from you IMMEDIATELY. Generate your letter, send it TODAY, and make sure they know this community will NOT stand for this.</p>
             
             <p><strong>Every email matters. Every voice counts. Don't assume someone else will do it.</strong></p>
 
@@ -159,16 +159,17 @@
                     </div>
                 </div>
 
-                <button id="generateBtn" class="btn btn-urgent">GET MY LETTER NOW</button>
+                <button id="generateBtn" class="btn btn-urgent">GENERATE MY LETTER NOW</button>
 
                 <div id="letterOutput" class="letter-output" style="display: none;">
-                    <h3>Your Letter:</h3>
+                    <h3>Your Email Should Open Automatically</h3>
+                    <p>Your default email client should open with your letter ready to send to <strong>boardofed@amityregion5.org</strong></p>
+                    <p><em>If it didn't open, you can copy the letter below and email it manually:</em></p>
                     <div id="letterContent" class="letter-content"></div>
                     <div class="button-group">
-                        <button id="copyBtn" class="btn btn-secondary">Copy to Clipboard</button>
+                        <button id="copyBtn" class="btn btn-secondary">Copy Letter</button>
                         <button id="downloadBtn" class="btn btn-secondary">Download as Text</button>
                     </div>
-                    <p class="email-info"><strong>Send to:</strong> boardofed@amityregion5.org</p>
                 </div>
             </div>
         </section>
@@ -178,17 +179,50 @@
             <ol class="steps">
                 <li><strong>Generate your letter</strong> using the tool above—takes 2 minutes</li>
                 <li><strong>Email it IMMEDIATELY</strong> to boardofed@amityregion5.org</li>
+                <li><strong>Call Dr. Byars</strong> using the script below</li>
                 <li><strong>Show up to the board meeting</strong> and speak (<a href="https://www.amityregion5.org/boe" target="_blank">check schedule here</a>)</li>
-                <li><strong>Share this page</strong> with every parent, student, and teacher you know</li>
+                <li><strong>Share this page</strong> with everyone you know</li>
                 <li><strong>Don't stop until they vote NO</strong></li>
             </ol>
+
+            <div class="phone-script-section">
+                <h3>📞 Call the Superintendent</h3>
+                <p><strong>Dr. Jennifer Byars, Superintendent</strong></p>
+                <div class="phone-number">203-397-4830 ext. 4824</div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <a href="tel:+12033974830,4824" class="btn btn-call">📞 Tap to call now</a>
+                </div>
+                <p><strong>Use this script:</strong></p>
+                <div class="script-box">
+                    "Hello, my name is [YOUR NAME] and I'm a [parent/student/teacher/community member] in the Amity school district. I'm calling to urge Dr. Byars to reconsider the proposed funding for AI platforms like Class Companion, SchoolAI, and Magic School AI. These tools raise serious ethical concerns—OpenAI is a major ICE contractor, the environmental impact is staggering, and students are already receiving incorrect grades that require human correction. We should be investing in teachers and reducing class sizes, not funding experimental technology that gambles with student transcripts. I'm asking the administration to remove AI funding from the budget and reallocate those resources to programs that actually serve students. Thank you."
+                </div>
+                <p><strong>Be polite but firm. Your call matters.</strong></p>
+            </div>
             
+            <div style="text-align: center; margin: 2rem 0;">
+                <button id="shareBtn" class="btn btn-share">SHARE THIS CAMPAIGN</button>
+            </div>
+
             <div class="final-callout">
                 <p><strong>If you do nothing, this passes.</strong></p>
                 <p><strong>If you wait, it's too late.</strong></p>
                 <p><strong>ACT NOW.</strong></p>
             </div>
         </section>
+
+        <!-- Share Modal -->
+        <div id="shareModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Share Keep Amity Human</h3>
+                <p>Help spread the word about stopping AI in Amity schools:</p>
+                <div class="share-options">
+                    <button class="share-btn-option" onclick="shareViaEmail()">📧 Share via Email</button>
+                    <button class="share-btn-option" onclick="shareViaSMS()">💬 Share via Text Message</button>
+                    <button class="share-btn-option" onclick="copyShareLink()">🔗 Copy Link</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
