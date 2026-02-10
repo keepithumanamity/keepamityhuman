@@ -59,7 +59,7 @@ Second, even if these tools never determine a single final grade, the ethical pr
 Third, without clear, enforced guidelines on appropriate use, "learning tools" inevitably become grading tools in practice. Once purchased, there's institutional pressure to justify the expense and expand usage.`
 };
 
-// Generate letter function - now opens mailto
+// Generate letter function - displays letter
 function generateLetter() {
     const name = document.getElementById('name').value.trim();
     const role = document.getElementById('role').value;
@@ -107,18 +107,27 @@ Sincerely,
 ${name}
 ${role}`;
 
-    // Create mailto link
-    const subject = encodeURIComponent('Opposition to AI Funding in Amity Schools');
-    const body = encodeURIComponent(letter);
-    const mailtoLink = `mailto:boardofed@amityregion5.org?subject=${subject}&body=${body}`;
+    // Store letter globally for mailto button
+    window.currentLetter = letter;
     
-    // Open mailto
-    window.location.href = mailtoLink;
-    
-    // Also display the letter for reference
+    // Display the letter
     document.getElementById('letterContent').textContent = letter;
     document.getElementById('letterOutput').style.display = 'block';
     document.getElementById('letterOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Mailto button function
+function sendViaEmail() {
+    if (!window.currentLetter) {
+        alert('Please generate your letter first.');
+        return;
+    }
+    
+    const subject = encodeURIComponent('Opposition to AI Funding in Amity Schools');
+    const body = encodeURIComponent(window.currentLetter);
+    const mailtoLink = `mailto:boardofed@amityregion5.org?subject=${subject}&body=${body}`;
+    
+    window.location.href = mailtoLink;
 }
 
 // Copy to clipboard function
@@ -161,6 +170,13 @@ document.getElementById('generateBtn').addEventListener('click', generateLetter)
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('downloadBtn').addEventListener('click', downloadLetter);
 
+// Mailto button listener (added after letter is generated)
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'mailtoBtn') {
+        sendViaEmail();
+    }
+});
+
 // Limit checkbox selection to 3
 document.querySelectorAll('.concern-checkbox').forEach(checkbox => {
     checkbox.addEventListener('change', function() {
@@ -182,16 +198,20 @@ document.querySelectorAll('nav a').forEach(anchor => {
 });
 
 // Share Modal Functions
-const modal = document.getElementById('shareModal');
 const shareBtn = document.getElementById('shareBtn');
+const modal = document.getElementById('shareModal');
 const closeBtn = document.getElementsByClassName('close')[0];
 
-shareBtn.onclick = function() {
-    modal.style.display = 'block';
+if (shareBtn) {
+    shareBtn.onclick = function() {
+        modal.style.display = 'block';
+    }
 }
 
-closeBtn.onclick = function() {
-    modal.style.display = 'none';
+if (closeBtn) {
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
 }
 
 window.onclick = function(event) {
