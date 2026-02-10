@@ -1,4 +1,77 @@
-// Email templates
+const emailOptions = {
+    all: [
+        { value: 'ethical', label: 'Ethical Concerns (ICE Connection)' },
+        { value: 'environmental', label: 'Environmental Impact' },
+        { value: 'academic-integrity', label: 'Academic Integrity Hypocrisy' },
+        { value: 'accuracy', label: 'Accuracy and Fairness Concerns' },
+        { value: 'learning-tool', label: '"Learning Tool" Distinction Is Irrelevant' },
+        { value: 'data-privacy', label: 'Student Data Privacy Concerns' },
+        { value: 'educational-research', label: 'Research Shows AI Harms Learning' },
+        { value: 'vendor-dependence', label: 'Vendor Lock-In & Cost Concerns' },
+        { value: 'false-objectivity', label: 'False Objectivity of AI Grading' }
+    ],
+    Parent: [
+        { value: 'accuracy-parent', label: 'Accuracy Concerns (Parent Perspective)' },
+        { value: 'data-privacy', label: 'My Child\'s Data Privacy' }
+    ],
+    Student: [
+        { value: 'ethical-personal', label: 'Ethical Concerns (Personal Connection)' },
+        { value: 'environmental-student', label: 'Environmental (Student Perspective)' },
+        { value: 'academic-integrity-student', label: 'Academic Integrity (Student Voice)' }
+    ],
+    Teacher: [
+        { value: 'teacher-concerns-educator', label: 'Teacher Concerns (Educator Voice)' },
+        { value: 'labor-implications', label: 'Labor & Job Security Concerns' },
+        { value: 'educational-research', label: 'Research on AI in Education' }
+    ],
+    'Community Member': [
+        { value: 'vendor-dependence', label: 'Taxpayer Cost & Vendor Lock-In' },
+        { value: 'ethical', label: 'Community Ethics & Values' }
+    ]
+};
+
+function updateConcernsForRole() {
+    const role = document.getElementById('role').value;
+    const container = document.getElementById('concernsContainer');
+    
+    container.innerHTML = '';
+    
+    emailOptions.all.forEach(option => {
+        const label = document.createElement('label');
+        label.className = 'checkbox-label';
+        label.innerHTML = `
+            <input type="checkbox" value="${option.value}" class="concern-checkbox">
+            ${option.label}
+        `;
+        container.appendChild(label);
+    });
+    
+    if (emailOptions[role]) {
+        emailOptions[role].forEach(option => {
+            const label = document.createElement('label');
+            label.className = 'checkbox-label';
+            label.innerHTML = `
+                <input type="checkbox" value="${option.value}" class="concern-checkbox">
+                ${option.label} ⭐
+            `;
+            container.appendChild(label);
+        });
+    }
+    
+    document.querySelectorAll('.concern-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedBoxes = document.querySelectorAll('.concern-checkbox:checked');
+            if (checkedBoxes.length > 3) {
+                this.checked = false;
+                alert('Please select no more than 3 concerns for a focused, effective letter.');
+            }
+        });
+    });
+}
+
+document.getElementById('role').addEventListener('change', updateConcernsForRole);
+document.addEventListener('DOMContentLoaded', updateConcernsForRole);
+
 const templates = {
     ethical: `These platforms are powered by OpenAI's GPT-4 technology. OpenAI is a major contractor and donor to Immigration and Customs Enforcement (ICE), providing technology used in deportation operations and surveillance of immigrant communities. When Amity funds these products, we are indirectly supporting activities that may harm families in our own district.
 
@@ -56,10 +129,35 @@ First, any tool that provides numerical feedback (like "1 out of 3") influences 
 
 Second, even if these tools never determine a single final grade, the ethical problems remain unchanged. Funding OpenAI still supports ICE operations. The environmental impact is identical. The message about AI's role in education is the same.
 
-Third, without clear, enforced guidelines on appropriate use, "learning tools" inevitably become grading tools in practice. Once purchased, there's institutional pressure to justify the expense and expand usage.`
+Third, without clear, enforced guidelines on appropriate use, "learning tools" inevitably become grading tools in practice. Once purchased, there's institutional pressure to justify the expense and expand usage.`,
+
+    'data-privacy': `These AI platforms require uploading student work to third-party servers. This raises serious data privacy concerns. Student writing, personal reflections, and intellectual property are being fed into corporate databases with unclear retention policies and potential for data breaches.
+
+We have no guarantee about what happens to student data once it's uploaded. Will it be used to train future AI models? Sold to third parties? Retained indefinitely? Students and families deserve transparency about how their private educational data is being used.
+
+Additionally, FERPA protections may not adequately cover AI-processed student work, creating potential legal liability for the district.`,
+
+    'educational-research': `Research consistently shows that AI feedback does not improve learning outcomes compared to human feedback. A 2024 MIT study found that students who relied on AI tools showed decreased critical thinking skills and problem-solving abilities. They become dependent on algorithmic suggestions rather than developing independent analytical skills.
+
+Furthermore, studies show AI cannot provide the nuanced, context-aware feedback that facilitates genuine learning. It cannot recognize a student's growth trajectory, understand their individual challenges, or adapt feedback to their specific learning style. These are fundamentally human capabilities that algorithms cannot replicate.`,
+
+    'vendor-dependence': `By adopting these platforms, Amity creates vendor lock-in. Once we've built curricula around these tools, trained teachers to use them, and made them central to assessment, switching becomes prohibitively expensive and disruptive.
+
+This gives companies like OpenAI tremendous leverage over future pricing and contract terms. We've seen this pattern repeatedly with educational technology: introductory pricing that seems reasonable, followed by dramatic increases once districts are dependent.
+
+We should invest in sustainable, district-controlled solutions rather than creating dependency on profit-driven corporations.`,
+
+    'labor-implications': `This technology represents the first step toward replacing educators with algorithms. Today it's "just feedback." Tomorrow it's automated grading. Eventually it's AI-delivered instruction. We've seen this pattern in other industries—automation starts as "assistance" and ends as replacement.
+
+Teachers are already overworked and undervalued. Instead of funding tools that could eventually eliminate teaching positions, we should be investing in hiring more teachers, reducing class sizes, and improving working conditions. That's how you improve education—not through technological shortcuts.`,
+
+    'false-objectivity': `AI grading creates a dangerous illusion of objectivity. Because it's algorithmic, people assume it must be fair and unbiased. In reality, AI systems replicate and often amplify the biases in their training data.
+
+This "objectivity bias" makes errors harder to challenge. When a teacher makes a grading mistake, students can question it. When an algorithm makes the same mistake, it's treated as authoritative. The system becomes less accountable, not more.
+
+Moreover, reducing education to what can be algorithmically assessed narrows our definition of learning. The most important educational outcomes—critical thinking, creativity, ethical reasoning—cannot be measured by AI.`
 };
 
-// Generate letter function - displays letter
 function generateLetter() {
     const name = document.getElementById('name').value.trim();
     const role = document.getElementById('role').value;
@@ -82,20 +180,17 @@ function generateLetter() {
         return;
     }
 
-    // Build the letter
     let letter = `Dear Amity Board of Education,
 
 I am writing to oppose funding for AI-powered learning tools at Amity Regional High School, including Class Companion, SchoolAI, and Magic School AI.
 
 `;
 
-    // Add selected concern sections
     selectedConcerns.forEach((concern, index) => {
         if (index > 0) letter += '\n\n';
         letter += templates[concern];
     });
 
-    // Add closing
     letter += `
 
 For these reasons, I am asking you to vote no on this funding. Do not make Amity complicit in supporting ICE operations, environmental destruction, or the erosion of teacher-student relationships. Invest in people, not algorithms.
@@ -107,16 +202,13 @@ Sincerely,
 ${name}
 ${role}`;
 
-    // Store letter globally for mailto button
     window.currentLetter = letter;
     
-    // Display the letter
     document.getElementById('letterContent').textContent = letter;
     document.getElementById('letterOutput').style.display = 'block';
     document.getElementById('letterOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Mailto button function
 function sendViaEmail() {
     if (!window.currentLetter) {
         alert('Please generate your letter first.');
@@ -130,7 +222,6 @@ function sendViaEmail() {
     window.location.href = mailtoLink;
 }
 
-// Copy to clipboard function
 function copyToClipboard() {
     const letterText = document.getElementById('letterContent').textContent;
     
@@ -149,7 +240,6 @@ function copyToClipboard() {
     });
 }
 
-// Download as text file function
 function downloadLetter() {
     const letterText = document.getElementById('letterContent').textContent;
     const name = document.getElementById('name').value.trim();
@@ -165,30 +255,16 @@ function downloadLetter() {
     window.URL.revokeObjectURL(url);
 }
 
-// Event listeners
 document.getElementById('generateBtn').addEventListener('click', generateLetter);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('downloadBtn').addEventListener('click', downloadLetter);
 
-// Mailto button listener (added after letter is generated)
 document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'mailtoBtn') {
         sendViaEmail();
     }
 });
 
-// Limit checkbox selection to 3
-document.querySelectorAll('.concern-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        const checkedBoxes = document.querySelectorAll('.concern-checkbox:checked');
-        if (checkedBoxes.length > 3) {
-            this.checked = false;
-            alert('Please select no more than 3 concerns for a focused, effective letter.');
-        }
-    });
-});
-
-// Smooth scrolling for navigation links
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -197,7 +273,6 @@ document.querySelectorAll('nav a').forEach(anchor => {
     });
 });
 
-// Share Modal Functions
 const shareBtn = document.getElementById('shareBtn');
 const modal = document.getElementById('shareModal');
 const closeBtn = document.getElementsByClassName('close')[0];
@@ -255,3 +330,28 @@ function copyShareLink() {
         alert('Failed to copy. Please copy this manually:\n\n' + shareText);
     });
 }
+
+const meetingDate = new Date('March 9, 2025 19:00:00').getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = meetingDate - now;
+    
+    if (distance < 0) {
+        document.getElementById('countdown').innerHTML = '<div class="countdown-label" style="color: var(--primary-color); font-size: 1.3rem;">⏰ THE MEETING IS HAPPENING NOW OR HAS PASSED</div>';
+        return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days').textContent = days;
+    document.getElementById('hours').textContent = hours;
+    document.getElementById('minutes').textContent = minutes;
+    document.getElementById('seconds').textContent = seconds;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
