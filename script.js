@@ -63,7 +63,6 @@ Third, without clear, enforced guidelines on appropriate use, "learning tools" i
 function generateLetter() {
     const name = document.getElementById('name').value.trim();
     const role = document.getElementById('role').value;
-    const address = document.getElementById('address').value.trim();
     
     const selectedConcerns = Array.from(document.querySelectorAll('.concern-checkbox:checked'))
         .map(cb => cb.value);
@@ -107,10 +106,6 @@ Sincerely,
 
 ${name}
 ${role}`;
-
-    if (address) {
-        letter += `\n${address}`;
-    }
 
     // Display the letter
     document.getElementById('letterContent').textContent = letter;
