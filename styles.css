@@ -40,6 +40,7 @@ header {
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     border-bottom: 3px solid var(--gold);
+    margin-top: 0;
 }
 
 header h1 {
@@ -672,4 +673,33 @@ footer p {
     .btn {
         width: 100%;
     }
+
+.petition-banner {
+    background-color: #ffcc00; /* Bright attention-grabbing gold */
+    color: #000;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+    position: sticky; /* Keeps it at the top while scrolling */
+    top: 0;
+    z-index: 1000; /* Ensures it stays above other elements */
+    border-bottom: 2px solid #d4a017;
+    font-size: 1.1rem;
+}
+
+.petition-banner p {
+    margin: 0;
+}
+
+.petition-banner a {
+    color: #000;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.petition-banner a:hover {
+    color: #d41717; /* Changes to red on hover for urgency */
+}
+
 }
