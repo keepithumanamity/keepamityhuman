@@ -58,7 +58,6 @@ header {
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     border-bottom: 3px solid var(--gold);
-    display: block; /* Ensures it acts as a block */
     width: 100%;
 }
 
