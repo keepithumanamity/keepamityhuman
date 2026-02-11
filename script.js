@@ -1,3 +1,4 @@
+// Email template options organized by role
 const emailOptions = {
     all: [
         { value: 'ethical', label: 'Ethical Concerns (ICE Connection)' },
@@ -30,12 +31,20 @@ const emailOptions = {
     ]
 };
 
+// Update concerns based on selected role
 function updateConcernsForRole() {
     const role = document.getElementById('role').value;
     const container = document.getElementById('concernsContainer');
+    const message = document.getElementById('selectRoleMessage');
     
+    // Show container, hide message
+    container.style.display = 'flex';
+    if (message) message.style.display = 'none';
+    
+    // Clear existing checkboxes
     container.innerHTML = '';
     
+    // Add general options (available to all)
     emailOptions.all.forEach(option => {
         const label = document.createElement('label');
         label.className = 'checkbox-label';
@@ -46,6 +55,7 @@ function updateConcernsForRole() {
         container.appendChild(label);
     });
     
+    // Add role-specific options
     if (emailOptions[role]) {
         emailOptions[role].forEach(option => {
             const label = document.createElement('label');
@@ -58,6 +68,7 @@ function updateConcernsForRole() {
         });
     }
     
+    // Re-attach checkbox limit listener
     document.querySelectorAll('.concern-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const checkedBoxes = document.querySelectorAll('.concern-checkbox:checked');
@@ -69,9 +80,10 @@ function updateConcernsForRole() {
     });
 }
 
+// Initialize concerns on page load and when role changes
 document.getElementById('role').addEventListener('change', updateConcernsForRole);
-document.addEventListener('DOMContentLoaded', updateConcernsForRole);
 
+// Email templates
 const templates = {
     ethical: `These platforms are powered by OpenAI's GPT-4 technology. OpenAI is a major contractor and donor to Immigration and Customs Enforcement (ICE), providing technology used in deportation operations and surveillance of immigrant communities. When Amity funds these products, we are indirectly supporting activities that may harm families in our own district.
 
@@ -158,6 +170,7 @@ This "objectivity bias" makes errors harder to challenge. When a teacher makes a
 Moreover, reducing education to what can be algorithmically assessed narrows our definition of learning. The most important educational outcomes—critical thinking, creativity, ethical reasoning—cannot be measured by AI.`
 };
 
+// Generate letter function - displays letter
 function generateLetter() {
     const name = document.getElementById('name').value.trim();
     const role = document.getElementById('role').value;
@@ -180,17 +193,20 @@ function generateLetter() {
         return;
     }
 
+    // Build the letter
     let letter = `Dear Amity Board of Education,
 
 I am writing to oppose funding for AI-powered learning tools at Amity Regional High School, including Class Companion, SchoolAI, and Magic School AI.
 
 `;
 
+    // Add selected concern sections
     selectedConcerns.forEach((concern, index) => {
         if (index > 0) letter += '\n\n';
         letter += templates[concern];
     });
 
+    // Add closing
     letter += `
 
 For these reasons, I am asking you to vote no on this funding. Do not make Amity complicit in supporting ICE operations, environmental destruction, or the erosion of teacher-student relationships. Invest in people, not algorithms.
@@ -202,13 +218,16 @@ Sincerely,
 ${name}
 ${role}`;
 
+    // Store letter globally for mailto button
     window.currentLetter = letter;
     
+    // Display the letter
     document.getElementById('letterContent').textContent = letter;
     document.getElementById('letterOutput').style.display = 'block';
     document.getElementById('letterOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// Mailto button function
 function sendViaEmail() {
     if (!window.currentLetter) {
         alert('Please generate your letter first.');
@@ -222,6 +241,7 @@ function sendViaEmail() {
     window.location.href = mailtoLink;
 }
 
+// Copy to clipboard function
 function copyToClipboard() {
     const letterText = document.getElementById('letterContent').textContent;
     
@@ -240,6 +260,7 @@ function copyToClipboard() {
     });
 }
 
+// Download as text file function
 function downloadLetter() {
     const letterText = document.getElementById('letterContent').textContent;
     const name = document.getElementById('name').value.trim();
@@ -255,16 +276,19 @@ function downloadLetter() {
     window.URL.revokeObjectURL(url);
 }
 
+// Event listeners
 document.getElementById('generateBtn').addEventListener('click', generateLetter);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('downloadBtn').addEventListener('click', downloadLetter);
 
+// Mailto button listener (added after letter is generated)
 document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'mailtoBtn') {
         sendViaEmail();
     }
 });
 
+// Smooth scrolling for navigation links
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -273,6 +297,7 @@ document.querySelectorAll('nav a').forEach(anchor => {
     });
 });
 
+// Share Modal Functions
 const shareBtn = document.getElementById('shareBtn');
 const modal = document.getElementById('shareModal');
 const closeBtn = document.getElementsByClassName('close')[0];
@@ -331,7 +356,9 @@ function copyShareLink() {
     });
 }
 
-const meetingDate = new Date('March 9, 2025 19:00:00').getTime();
+// Countdown Timer
+// SET THE MEETING DATE HERE - format: 'YYYY-MM-DDTHH:MM:SS'
+const meetingDate = new Date('2025-03-09T19:00:00').getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -353,5 +380,6 @@ function updateCountdown() {
     document.getElementById('seconds').textContent = seconds;
 }
 
+// Update countdown every second
 updateCountdown();
 setInterval(updateCountdown, 1000);
