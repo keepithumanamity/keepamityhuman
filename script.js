@@ -358,14 +358,24 @@ function copyShareLink() {
 
 // Countdown Timer
 // SET THE MEETING DATE HERE - format: 'YYYY-MM-DDTHH:MM:SS'
-const meetingDate = new Date(2026, 3, 9, 19, 0, 0).getTime();
+// Use a string format 'YYYY-MM-DDTHH:mm:ss' to avoid the zero-based month confusion
+const meetingDate = new Date('2026-03-09T19:00:00').getTime(); 
 
 function updateCountdown() {
     const now = new Date().getTime();
     const distance = meetingDate - now;
     
+    // Select the display elements
+    const dEl = document.getElementById('days');
+    const hEl = document.getElementById('hours');
+    const mEl = document.getElementById('minutes');
+    const sEl = document.getElementById('seconds');
+    const timerContainer = document.getElementById('countdown');
+
     if (distance < 0) {
-        document.getElementById('countdown').innerHTML = '<div class="countdown-label" style="color: var(--primary-color); font-size: 1.3rem;">⏰ THE MEETING IS HAPPENING NOW OR HAS PASSED</div>';
+        if (timerContainer) {
+            timerContainer.innerHTML = '<div class="countdown-label" style="color: #e63946; font-size: 1.3rem; font-weight: bold;">🚨 THE MEETING IS IN PROGRESS OR HAS PASSED</div>';
+        }
         return;
     }
     
@@ -374,12 +384,13 @@ function updateCountdown() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
     
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+    // Only update if the elements actually exist in the HTML
+    if (dEl) dEl.textContent = days;
+    if (hEl) hEl.textContent = hours;
+    if (mEl) mEl.textContent = minutes;
+    if (sEl) sEl.textContent = seconds;
 }
 
-// Update countdown every second
+// Start immediately and then every second
 updateCountdown();
 setInterval(updateCountdown, 1000);
