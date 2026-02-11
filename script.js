@@ -358,7 +358,7 @@ function copyShareLink() {
 
 // Countdown Timer
 // SET THE MEETING DATE HERE - format: 'YYYY-MM-DDTHH:MM:SS'
-const meetingDate = new Date('2025-03-09T19:00:00').getTime();
+const meetingDate = new Date('2026-03-09T19:00:00').getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
