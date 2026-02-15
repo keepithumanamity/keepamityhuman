@@ -26,6 +26,47 @@ body {
     background-color: var(--bg-color);
 }
 
+/* Petition Banner */
+.petition-banner {
+    background: linear-gradient(135deg, #8B0000, #DC143C);
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    font-weight: 700;
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    animation: pulse-banner 3s ease-in-out infinite;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+@keyframes pulse-banner {
+    0%, 100% {
+        background: linear-gradient(135deg, #8B0000, #DC143C);
+    }
+    50% {
+        background: linear-gradient(135deg, #A00000, #FF1744);
+    }
+}
+
+.petition-banner p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.petition-banner a {
+    color: var(--gold);
+    font-weight: 900;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.petition-banner a:hover {
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
