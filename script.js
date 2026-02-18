@@ -394,3 +394,363 @@ function updateCountdown() {
 // Start immediately and then every second
 updateCountdown();
 setInterval(updateCountdown, 1000);
+
+
+// ============================================================
+// TRACK YOUR REP — Voting history modal + expandable vote rows
+// ============================================================
+// ============================================================
+    // VOTING DATA — sourced from official Board meeting minutes
+    // ============================================================
+    const votes = [
+        { date: "Dec 8, 2025",  label: "Officer Elections (Chair, VP, Secretary, Treasurer)",             result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Approve 11/24/25 Minutes",                                        result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Discussion: 2026-27 School Calendar",                             result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Silver Petrucelli contract — media center design ($34K)",         result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Mercury Electric contract — Brady Center lighting ($45,861)",     result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Encore Fire Protection — fire pump replacement ($148,250)",       result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Xerox contract ($12,324/month through 2030)",                     result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Budget transfer — special ed certified positions",                result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Budget transfer — increased transportation costs",                result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Budget transfer — admin assistant leaves",                        result: "PASSED" },
+        { date: "Dec 8, 2025",  label: "Policy 6142.101 — School Wellness Policy",                        result: "FAILED" },
+        { date: "Dec 22, 2025", label: "Approve December 8, 2025 minutes",                                result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Approve December 22, 2025 minutes",                               result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Accept Annual Financial Statements (June 30, 2025)",              result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Reduce March Allocation payment by $898,605",                     result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Budget transfer — special ed homebound services",                 result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Budget transfer — special ed transportation",                     result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Budget transfer — CNC Maker Fab router",                          result: "PASSED" },
+        { date: "Jan 12, 2026", label: "Approve Policy 6111 — School Calendar",                           result: "PASSED" },
+        { date: "Feb 2, 2026",  label: "Approve January 12, 2026 minutes",                                result: "PASSED" },
+        { date: "Feb 2, 2026",  label: "Approve ARHS LMC Design Plans",                                   result: "PASSED" },
+        { date: "Feb 2, 2026",  label: "Enter executive session (invite Dr. Byars)",                      result: "PASSED" },
+    ];
+
+    const repData = {
+        bradley:     { name: "Cathy Bradley",        party: "Republican · Orange",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","Not present","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","In favor","In favor"] },
+        cloudingram: { name: "Autumn Cloud-Ingram",  party: "Democrat · Bethany",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] },
+        davis:       { name: "Paul Davis",           party: "Democrat · Orange · Chairperson",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] },
+        jacquet:     { name: "Jennifer Jacquet",     party: "Democrat · Orange",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
+        karunakaran: { name: "Sudhir Karunakaran",  party: "Democrat · Woodbridge",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
+        lombardi:    { name: "Dana Lombardi",        party: "Republican · Orange · Secretary",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] },
+        mcdonough:   { name: "Michael McDonough",    party: "Republican · Orange",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","Not present","In favor","In favor","In favor","In favor","In favor","Abstain","In favor","In favor","In favor","In favor"] },
+        oladele:     { name: "Carol Oladele",        party: "Democrat · Woodbridge",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
+        rabuse:      { name: "Meghan Rabuse",        party: "Republican · Woodbridge · Treasurer",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","In favor","In favor","In favor"] },
+        reed:        { name: "Patrick Reed",         party: "Democrat · Woodbridge · Vice Chairperson",
+            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
+        schlank:     { name: "Donna Schlank",        party: "Republican · Bethany · Deputy Treasurer",
+            votes: ["In favor","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","Abstain","In favor","In favor"] },
+        schuster:    { name: "Donna Schuster",       party: "Democrat · Woodbridge",
+            votes: ["In favor","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","Not present","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
+        young:       { name: "Christian Young",      party: "Republican · Orange",
+            votes: ["In favor","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] }
+    };
+
+    function voteClass(v) {
+        if (v === "In favor")    return "vote-yes";
+        if (v === "Against")     return "vote-no";
+        if (v === "Abstain")     return "vote-abstain";
+        if (v === "Not present") return "vote-absent";
+        return "";
+    }
+
+    function voteLabel(v) {
+        if (v === "In favor")    return "✅ In Favor";
+        if (v === "Against")     return "❌ Against";
+        if (v === "Abstain")     return "⚠️ Abstain";
+        if (v === "Not present") return "— Absent";
+        return v;
+    }
+
+    function showVotingHistory(repId) {
+        const rep = repData[repId];
+        if (!rep) return;
+
+        document.getElementById('modal-rep-name').textContent = rep.name + " — Voting Record";
+        document.getElementById('modal-rep-party').textContent = rep.party;
+
+        let inFavor = 0, against = 0, abstain = 0, absent = 0;
+        rep.votes.forEach(v => {
+            if (v === "In favor")    inFavor++;
+            else if (v === "Against")     against++;
+            else if (v === "Abstain")     abstain++;
+            else if (v === "Not present") absent++;
+        });
+
+        let html = `
+            <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+                <div style="background:#d4edda; border:2px solid #28a745; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
+                    <div style="font-size:1.8rem; font-weight:900; color:#155724;">${inFavor}</div>
+                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#155724;">In Favor</div>
+                </div>
+                <div style="background:#f8d7da; border:2px solid #dc3545; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
+                    <div style="font-size:1.8rem; font-weight:900; color:#721c24;">${against}</div>
+                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#721c24;">Against</div>
+                </div>
+                <div style="background:#fff3cd; border:2px solid #ffc107; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
+                    <div style="font-size:1.8rem; font-weight:900; color:#856404;">${abstain}</div>
+                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#856404;">Abstain</div>
+                </div>
+                <div style="background:#e9ecef; border:2px solid #6c757d; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
+                    <div style="font-size:1.8rem; font-weight:900; color:#495057;">${absent}</div>
+                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#495057;">Absent</div>
+                </div>
+            </div>
+            <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th style="background:#1a1a1a; color:#D4AF37; padding:0.75rem; text-align:left; font-size:0.85rem;">Vote</th>
+                        <th style="background:#1a1a1a; color:#D4AF37; padding:0.75rem; text-align:left; font-size:0.85rem; white-space:nowrap;">Date</th>
+                        <th style="background:#1a1a1a; color:#D4AF37; padding:0.75rem; text-align:left; font-size:0.85rem;">Cast</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+        votes.forEach((vote, i) => {
+            const v = rep.votes[i] || "Not present";
+            const rowBg = v === "Against" ? "#fff5f5" : v === "Abstain" ? "#fffdf0" : v === "Not present" ? "#f8f9fa" : "white";
+            html += `
+                    <tr style="background:${rowBg}; border-bottom:1px solid #eee;">
+                        <td style="padding:0.65rem 0.75rem; font-size:0.9rem;">${vote.label}</td>
+                        <td style="padding:0.65rem 0.75rem; font-size:0.85rem; color:#666; white-space:nowrap;">${vote.date}</td>
+                        <td style="padding:0.65rem 0.75rem;"><span class="${voteClass(v)}">${voteLabel(v)}</span></td>
+                    </tr>`;
+        });
+
+        html += `</tbody></table>`;
+        document.getElementById('modal-vote-content').innerHTML = html;
+        document.getElementById('vote-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeVoteModal() {
+        document.getElementById('vote-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeVoteModal();
+    });
+
+    // ============================================================
+    // FULL VOTE DATA with per-rep breakdown for expandable rows
+    // ============================================================
+    const fullVotes = [
+        {
+            date: "Dec 8, 2025",
+            label: "Officer Elections",
+            result: "PASSED",
+            note: "Chair: Davis (7) | Vice Chair: Reed (8) | Secretary: Lombardi | Treasurer: Rabuse | Deputy Treasurer: Schlank",
+            special: "officers",
+            repVotes: {
+                bradley:     { vote: "In favor", chairVote: "Bradley",  vpVote: "Bradley"  },
+                cloudingram: { vote: "In favor", chairVote: "Bradley",  vpVote: "Reed"     },
+                davis:       { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                jacquet:     { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                karunakaran: { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                lombardi:    { vote: "In favor", chairVote: "Bradley",  vpVote: "Bradley"  },
+                mcdonough:   { vote: "In favor", chairVote: "Bradley",  vpVote: "Bradley"  },
+                oladele:     { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                rabuse:      { vote: "In favor", chairVote: "Bradley",  vpVote: "Bradley"  },
+                reed:        { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                schlank:     { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                schuster:    { vote: "In favor", chairVote: "Davis",    vpVote: "Reed"     },
+                young:       { vote: "In favor", chairVote: "Bradley",  vpVote: "Bradley"  },
+            }
+        },
+        { date: "Dec 8, 2025",  label: "Approve 11/24/25 Minutes",                              result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Abstain", schuster:"Abstain", young:"Abstain" } },
+        { date: "Dec 8, 2025",  label: "Discussion: 2026-27 School Calendar",                   result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Silver Petrucelli contract — media center design ($34K)", result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Mercury Electric — Brady Center lighting ($45,861)",     result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Encore Fire Protection — fire pump replacement ($148,250)", result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Xerox contract ($12,324/month through 2030)",            result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Budget transfer — special ed certified positions",       result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Budget transfer — increased transportation costs",       result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Budget transfer — admin assistant leaves",               result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Dec 8, 2025",  label: "Policy 6142.101 — School Wellness Policy",               result: "FAILED",
+            repVotes: { bradley:"Against", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"Against", mcdonough:"Against", oladele:"Against", rabuse:"Against", reed:"In favor", schlank:"Against", schuster:"Against", young:"Against" } },
+        { date: "Dec 22, 2025", label: "Approve December 8, 2025 minutes",                       result: "PASSED",
+            repVotes: { bradley:"Not present", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"Not present", lombardi:"In favor", mcdonough:"Not present", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"Not present", young:"In favor" } },
+        { date: "Jan 12, 2026", label: "Approve December 22, 2025 minutes",                      result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Not present", schuster:"Abstain", young:"Not present" } },
+        { date: "Jan 12, 2026", label: "Accept Annual Financial Statements (June 30, 2025)",     result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Not present", schuster:"In favor", young:"Not present" } },
+        { date: "Jan 12, 2026", label: "Reduce March Allocation payment by $898,605",            result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Not present", schuster:"In favor", young:"Not present" } },
+        { date: "Jan 12, 2026", label: "Budget transfer — special ed homebound services",        result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Not present", schuster:"In favor", young:"Not present" } },
+        { date: "Jan 12, 2026", label: "Budget transfer — special ed transportation",            result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Not present", schuster:"In favor", young:"Not present" } },
+        { date: "Jan 12, 2026", label: "Budget transfer — CNC Maker Fab router",                 result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"Abstain", oladele:"In favor", rabuse:"Against", reed:"In favor", schlank:"Not present", schuster:"In favor", young:"Not present" } },
+        { date: "Jan 12, 2026", label: "Approve Policy 6111 — School Calendar",                  result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"Not present", davis:"Not present", jacquet:"In favor", karunakaran:"In favor", lombardi:"Not present", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Not present", schuster:"In favor", young:"Not present" } },
+        { date: "Feb 2, 2026",  label: "Approve January 12, 2026 minutes",                       result: "PASSED",
+            repVotes: { bradley:"Not present", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"Abstain", schuster:"In favor", young:"In favor" } },
+        { date: "Feb 2, 2026",  label: "Approve ARHS LMC Design Plans",                          result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+        { date: "Feb 2, 2026",  label: "Enter executive session (invite Dr. Byars)",             result: "PASSED",
+            repVotes: { bradley:"In favor", cloudingram:"In favor", davis:"In favor", jacquet:"In favor", karunakaran:"In favor", lombardi:"In favor", mcdonough:"In favor", oladele:"In favor", rabuse:"In favor", reed:"In favor", schlank:"In favor", schuster:"In favor", young:"In favor" } },
+    ];
+
+    const repMeta = {
+        bradley:     { name: "Cathy Bradley",        photo: null,                           initials: "CB" },
+        cloudingram: { name: "Autumn Cloud-Ingram",  photo: "photos/cloudingram.jpg",       initials: "AC" },
+        davis:       { name: "Paul Davis",           photo: "photos/davis.jpg",             initials: "PD" },
+        jacquet:     { name: "Jennifer Jacquet",     photo: "photos/jacquet.jpg",           initials: "JJ" },
+        karunakaran: { name: "Sudhir Karunakaran",  photo: "photos/sudhir.png",            initials: "SK" },
+        lombardi:    { name: "Dana Lombardi",        photo: "photos/Dana Lombardi.jpg",     initials: "DL" },
+        mcdonough:   { name: "Michael McDonough",    photo: "photos/Mike McDonough.jpg",    initials: "MM" },
+        oladele:     { name: "Carol Oladele",        photo: "photos/oladele.jpg",           initials: "CO" },
+        rabuse:      { name: "Meghan Rabuse",        photo: "photos/rabuse.jpg",            initials: "MR" },
+        reed:        { name: "Patrick Reed",         photo: "photos/reed.png",              initials: "PR" },
+        schlank:     { name: "Donna Schlank",        photo: "photos/schlank.jpg",           initials: "DS" },
+        schuster:    { name: "Donna Schuster",       photo: "photos/schuster.png",          initials: "DS" },
+        young:       { name: "Christian Young",      photo: "photos/young.jpg",             initials: "CY" },
+    };
+
+    const repOrder = ["bradley","cloudingram","davis","jacquet","karunakaran","lombardi","mcdonough","oladele","rabuse","reed","schlank","schuster","young"];
+
+    function evClass(v) {
+        if (v === "In favor")    return "ev-favor";
+        if (v === "Against")     return "ev-against";
+        if (v === "Abstain")     return "ev-abstain";
+        return "ev-absent";
+    }
+
+    function evLabel(v) {
+        if (v === "In favor")    return "✅ In Favor";
+        if (v === "Against")     return "❌ Against";
+        if (v === "Abstain")     return "⚠️ Abstain";
+        return "— Absent";
+    }
+
+    function repPhotoHTML(id) {
+        const m = repMeta[id];
+        if (m.photo) return `<img src="${m.photo}" alt="${m.name}" class="expand-rep-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+<span class="initials" style="display:none;">${m.initials}</span>`;
+        return `<span class="initials">${m.initials}</span>`;
+    }
+
+    function buildVoteTable() {
+        const tbody = document.getElementById('vote-tbody');
+        if (!tbody) return;
+        let html = '';
+
+        fullVotes.forEach((vote, i) => {
+            const resultClass = vote.result === 'PASSED' ? 'vote-yes' : 'vote-no';
+
+            // Count votes
+            let inFavor = 0, against = 0, abstain = 0, absent = 0;
+            if (vote.special === 'officers') {
+                repOrder.forEach(id => { if (vote.repVotes[id]) inFavor++; });
+            } else {
+                repOrder.forEach(id => {
+                    const v = vote.repVotes[id] || 'Not present';
+                    if (v === 'In favor') inFavor++;
+                    else if (v === 'Against') against++;
+                    else if (v === 'Abstain') abstain++;
+                    else absent++;
+                });
+            }
+
+            const tally = vote.special === 'officers'
+                ? `<span style="font-size:0.75rem; color:#888; margin-left:0.5rem;">(unanimous)</span>`
+                : `<span style="font-size:0.75rem; color:#888; margin-left:0.5rem;">${inFavor}–${against}${abstain > 0 ? ` (${abstain} abs)` : ''}${absent > 0 ? ` (${absent} absent)` : ''}</span>`;
+
+            html += `<tr class="vote-row" id="vrow-${i}" onclick="toggleVoteExpand(${i})">
+                <td>${vote.label} ${tally}</td>
+                <td><span class="${resultClass}">${vote.result}</span></td>
+                <td>${vote.date}</td>
+            </tr>
+            <tr class="vote-expand" id="vexp-${i}">
+                <td colspan="3">
+                    <div class="vote-expand-inner">`;
+
+            if (vote.special === 'officers') {
+                // Special officer elections layout
+                html += `<div style="margin-bottom:1rem;">
+                    <strong>Results:</strong> Chair → <strong>Paul Davis</strong> (7 votes) | Vice Chair → <strong>Patrick Reed</strong> (8 votes) | Secretary → <strong>Dana Lombardi</strong> | Treasurer → <strong>Meghan Rabuse</strong> | Deputy Treasurer → <strong>Donna Schlank</strong>
+                </div>
+                <div style="font-weight:700; margin-bottom:0.5rem; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Chair Vote (Bradley vs. Davis)</div>
+                <div class="expand-grid" style="margin-bottom:1rem;">`;
+                repOrder.forEach(id => {
+                    const rv = vote.repVotes[id];
+                    const chairClass = rv.chairVote === 'Davis' ? 'ev-favor' : 'ev-against';
+                    html += `<div class="expand-rep ${chairClass}">
+                        <div style="display:flex; align-items:center; gap:0.4rem; width:100%;">
+                            ${rv.chairVote === 'Davis'
+                                ? `<img src="photos/davis.jpg" alt="Davis" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid #28a745;">`
+                                : `<img src="photos/null" alt="" style="width:20px;height:20px;border-radius:50%;background:#ddd;border:1px solid #dc3545;" onerror="this.style.display='none'">`}
+                            <span>${repMeta[id].name.split(' ').pop()} → ${rv.chairVote}</span>
+                        </div>
+                    </div>`;
+                });
+                html += `</div>
+                <div style="font-weight:700; margin-bottom:0.5rem; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px;">Vice Chair Vote (Bradley vs. Reed)</div>
+                <div class="expand-grid">`;
+                repOrder.forEach(id => {
+                    const rv = vote.repVotes[id];
+                    const vpClass = rv.vpVote === 'Reed' ? 'ev-favor' : 'ev-against';
+                    html += `<div class="expand-rep ${vpClass}">
+                        <span>${repMeta[id].name.split(' ').pop()} → ${rv.vpVote}</span>
+                    </div>`;
+                });
+                html += `</div>`;
+            } else {
+                // Standard vote breakdown
+                html += `<div class="expand-grid">`;
+                repOrder.forEach(id => {
+                    const v = vote.repVotes[id] || 'Not present';
+                    const m = repMeta[id];
+                    html += `<div class="expand-rep ${evClass(v)}">`;
+                    if (m.photo) {
+                        html += `<img src="${m.photo}" alt="${m.name}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid currentColor;flex-shrink:0;" onerror="this.outerHTML='<span style=\'width:28px;height:28px;border-radius:50%;background:#ddd;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;flex-shrink:0;\'>${m.initials}</span>'">`;
+                    } else {
+                        html += `<span style="width:28px;height:28px;border-radius:50%;background:#555;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;color:#D4AF37;flex-shrink:0;">${m.initials}</span>`;
+                    }
+                    html += `<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.name.split(' ').pop()} — ${evLabel(v)}</span></div>`;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div></td></tr>`;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    function toggleVoteExpand(i) {
+        const row = document.getElementById('vrow-' + i);
+        const exp = document.getElementById('vexp-' + i);
+        const isOpen = exp.classList.contains('show');
+        // Close all
+        document.querySelectorAll('.vote-expand').forEach(el => el.classList.remove('show'));
+        document.querySelectorAll('.vote-row').forEach(el => el.classList.remove('open'));
+        // Open this one if it was closed
+        if (!isOpen) {
+            exp.classList.add('show');
+            row.classList.add('open');
+        }
+    }
+
+    buildVoteTable();
