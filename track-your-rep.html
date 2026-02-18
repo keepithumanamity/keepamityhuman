@@ -311,6 +311,9 @@
                     <img src="photos/cloudingram.jpg" alt="Autumn Cloud-Ingram" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
                     <div class="rep-name">Autumn Cloud-Ingram</div>
                     <div class="rep-party">Democrat · Bethany</div>
+                    <div style="background:#e8f4fd; border:2px solid #5b9bd5; border-radius:6px; padding:0.75rem 1rem; margin:0.75rem 0; font-size:0.85rem; color:#1a3a5c; font-style:italic;">
+                        💙 Note: Autumn welcomed a new baby — that's why she missed so many meetings. We do not look down on her for that.
+                    </div>
                     <div class="rep-stats">
                         <div class="stat">
                             <div class="stat-number">31%</div>
@@ -562,7 +565,26 @@
 
         <section class="section">
             <h2>Voting Record</h2>
-            <p>Full transparency on how each Board member has voted. Updated after every meeting.</p>
+            <p>Full transparency on how each Board member has voted. <strong>Click any row to expand individual votes.</strong> Updated after every meeting.</p>
+
+            <style>
+                .vote-row { cursor: pointer; transition: background 0.2s; }
+                .vote-row:hover { background: #FFF9E6 !important; }
+                .vote-row td:first-child::before { content: "▶ "; font-size: 0.7rem; color: var(--gold); }
+                .vote-row.open td:first-child::before { content: "▼ "; }
+                .vote-expand { display: none; background: #f9f9f9; }
+                .vote-expand.show { display: table-row; }
+                .vote-expand td { padding: 0 !important; }
+                .vote-expand-inner { padding: 1.25rem 1.5rem; border-top: 2px solid var(--gold); }
+                .expand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+                .expand-rep { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
+                .expand-rep img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex-shrink: 0; }
+                .expand-rep .initials { width: 28px; height: 28px; border-radius: 50%; background: #ddd; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; color: var(--gold); flex-shrink: 0; }
+                .ev-favor  { background: #d4edda; color: #155724; }
+                .ev-against { background: #f8d7da; color: #721c24; }
+                .ev-abstain { background: #fff3cd; color: #856404; }
+                .ev-absent  { background: #e9ecef; color: #495057; font-style: italic; }
+            </style>
 
             <div style="overflow-x: auto;">
                 <table class="voting-table">
@@ -573,102 +595,7 @@
                             <th>Date</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Enter executive session (invite Dr. Byars)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Feb 2, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Approve ARHS LMC Design Plans</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Feb 2, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Approve January 12, 2026 minutes</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Feb 2, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Approve Policy 6111 School Calendar</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Budget transfer for CNC Maker Fab router</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Budget transfer for special ed transportation services</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Budget transfer for homebound services</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Reduce March Allocation payment by $898,605</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Accept Annual Financial Statements (June 30, 2025)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Approve December 22, 2025 minutes</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Jan 12, 2026</td>
-                        </tr>
-                        <tr>
-                            <td>Approve December 08, 2025 minutes</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 22, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Approve Policy 6142.101 (School Wellness Policy)</td>
-                            <td><span class="vote-no">FAILED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Budget transfer for administrative assistant coverage</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Budget transfer for increased transportation costs</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Budget transfer for special ed services (vacancies/leaves)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Xerox contract ($12,324/month through 2030)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Fire pump replacement contract ($148,250)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Mercury Electric contract for Brady Center ($45,861)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
-                        <tr>
-                            <td>Silver Petrucelli contract for media center design ($34K)</td>
-                            <td><span class="vote-yes">PASSED</span></td>
-                            <td>Dec 8, 2025</td>
-                        </tr>
+                    <tbody id="vote-tbody">
                     </tbody>
                 </table>
             </div>
@@ -716,150 +643,7 @@
         </div>
     </div>
 
-    <script>
-    // ============================================================
-    // VOTING DATA — sourced from official Board meeting minutes
-    // ============================================================
-    const votes = [
-        { date: "Dec 8, 2025",  label: "Officer Elections (Chair, VP, Secretary, Treasurer)",             result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Approve 11/24/25 Minutes",                                        result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Discussion: 2026-27 School Calendar",                             result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Silver Petrucelli contract — media center design ($34K)",         result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Mercury Electric contract — Brady Center lighting ($45,861)",     result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Encore Fire Protection — fire pump replacement ($148,250)",       result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Xerox contract ($12,324/month through 2030)",                     result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Budget transfer — special ed certified positions",                result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Budget transfer — increased transportation costs",                result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Budget transfer — admin assistant leaves",                        result: "PASSED" },
-        { date: "Dec 8, 2025",  label: "Policy 6142.101 — School Wellness Policy",                        result: "FAILED" },
-        { date: "Dec 22, 2025", label: "Approve December 8, 2025 minutes",                                result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Approve December 22, 2025 minutes",                               result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Accept Annual Financial Statements (June 30, 2025)",              result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Reduce March Allocation payment by $898,605",                     result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Budget transfer — special ed homebound services",                 result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Budget transfer — special ed transportation",                     result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Budget transfer — CNC Maker Fab router",                          result: "PASSED" },
-        { date: "Jan 12, 2026", label: "Approve Policy 6111 — School Calendar",                           result: "PASSED" },
-        { date: "Feb 2, 2026",  label: "Approve January 12, 2026 minutes",                                result: "PASSED" },
-        { date: "Feb 2, 2026",  label: "Approve ARHS LMC Design Plans",                                   result: "PASSED" },
-        { date: "Feb 2, 2026",  label: "Enter executive session (invite Dr. Byars)",                      result: "PASSED" },
-    ];
-
-    const repData = {
-        bradley:     { name: "Cathy Bradley",        party: "Republican · Orange",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","Not present","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","In favor","In favor"] },
-        cloudingram: { name: "Autumn Cloud-Ingram",  party: "Democrat · Bethany",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] },
-        davis:       { name: "Paul Davis",           party: "Democrat · Orange · Chairperson",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] },
-        jacquet:     { name: "Jennifer Jacquet",     party: "Democrat · Orange",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
-        karunakaran: { name: "Sudhir Karunakaran",  party: "Democrat · Woodbridge",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Not present","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
-        lombardi:    { name: "Dana Lombardi",        party: "Republican · Orange · Secretary",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] },
-        mcdonough:   { name: "Michael McDonough",    party: "Republican · Orange",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","Not present","In favor","In favor","In favor","In favor","In favor","Abstain","In favor","In favor","In favor","In favor"] },
-        oladele:     { name: "Carol Oladele",        party: "Democrat · Woodbridge",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
-        rabuse:      { name: "Meghan Rabuse",        party: "Republican · Woodbridge · Treasurer",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","In favor","In favor","In favor"] },
-        reed:        { name: "Patrick Reed",         party: "Democrat · Woodbridge · Vice Chairperson",
-            votes: ["In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
-        schlank:     { name: "Donna Schlank",        party: "Republican · Bethany · Deputy Treasurer",
-            votes: ["In favor","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","Abstain","In favor","In favor"] },
-        schuster:    { name: "Donna Schuster",       party: "Democrat · Woodbridge",
-            votes: ["In favor","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","Not present","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor"] },
-        young:       { name: "Christian Young",      party: "Republican · Orange",
-            votes: ["In favor","Abstain","In favor","In favor","In favor","In favor","In favor","In favor","In favor","In favor","Against","In favor","Not present","Not present","Not present","Not present","Not present","Not present","Not present","In favor","In favor","In favor"] }
-    };
-
-    function voteClass(v) {
-        if (v === "In favor")    return "vote-yes";
-        if (v === "Against")     return "vote-no";
-        if (v === "Abstain")     return "vote-abstain";
-        if (v === "Not present") return "vote-absent";
-        return "";
-    }
-
-    function voteLabel(v) {
-        if (v === "In favor")    return "✅ In Favor";
-        if (v === "Against")     return "❌ Against";
-        if (v === "Abstain")     return "⚠️ Abstain";
-        if (v === "Not present") return "— Absent";
-        return v;
-    }
-
-    function showVotingHistory(repId) {
-        const rep = repData[repId];
-        if (!rep) return;
-
-        document.getElementById('modal-rep-name').textContent = rep.name + " — Voting Record";
-        document.getElementById('modal-rep-party').textContent = rep.party;
-
-        let inFavor = 0, against = 0, abstain = 0, absent = 0;
-        rep.votes.forEach(v => {
-            if (v === "In favor")    inFavor++;
-            else if (v === "Against")     against++;
-            else if (v === "Abstain")     abstain++;
-            else if (v === "Not present") absent++;
-        });
-
-        let html = `
-            <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
-                <div style="background:#d4edda; border:2px solid #28a745; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
-                    <div style="font-size:1.8rem; font-weight:900; color:#155724;">${inFavor}</div>
-                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#155724;">In Favor</div>
-                </div>
-                <div style="background:#f8d7da; border:2px solid #dc3545; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
-                    <div style="font-size:1.8rem; font-weight:900; color:#721c24;">${against}</div>
-                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#721c24;">Against</div>
-                </div>
-                <div style="background:#fff3cd; border:2px solid #ffc107; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
-                    <div style="font-size:1.8rem; font-weight:900; color:#856404;">${abstain}</div>
-                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#856404;">Abstain</div>
-                </div>
-                <div style="background:#e9ecef; border:2px solid #6c757d; border-radius:6px; padding:0.75rem 1.25rem; text-align:center; flex:1;">
-                    <div style="font-size:1.8rem; font-weight:900; color:#495057;">${absent}</div>
-                    <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#495057;">Absent</div>
-                </div>
-            </div>
-            <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                    <tr>
-                        <th style="background:#1a1a1a; color:#D4AF37; padding:0.75rem; text-align:left; font-size:0.85rem;">Vote</th>
-                        <th style="background:#1a1a1a; color:#D4AF37; padding:0.75rem; text-align:left; font-size:0.85rem; white-space:nowrap;">Date</th>
-                        <th style="background:#1a1a1a; color:#D4AF37; padding:0.75rem; text-align:left; font-size:0.85rem;">Cast</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-
-        votes.forEach((vote, i) => {
-            const v = rep.votes[i] || "Not present";
-            const rowBg = v === "Against" ? "#fff5f5" : v === "Abstain" ? "#fffdf0" : v === "Not present" ? "#f8f9fa" : "white";
-            html += `
-                    <tr style="background:${rowBg}; border-bottom:1px solid #eee;">
-                        <td style="padding:0.65rem 0.75rem; font-size:0.9rem;">${vote.label}</td>
-                        <td style="padding:0.65rem 0.75rem; font-size:0.85rem; color:#666; white-space:nowrap;">${vote.date}</td>
-                        <td style="padding:0.65rem 0.75rem;"><span class="${voteClass(v)}">${voteLabel(v)}</span></td>
-                    </tr>`;
-        });
-
-        html += `</tbody></table>`;
-        document.getElementById('modal-vote-content').innerHTML = html;
-        document.getElementById('vote-modal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeVoteModal() {
-        document.getElementById('vote-modal').style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeVoteModal();
-    });
-    </script>
+    <script src="script.js"></script>
 
 </body>
 </html>
