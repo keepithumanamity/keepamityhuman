@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Rep - Keep Amity Human</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .rep-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .rep-card {
+            background: white;
+            border: 3px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .rep-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .rep-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            border: 3px solid var(--gold);
+        }
+
+        .rep-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .rep-party {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .rep-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .stance {
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .stance-awaiting {
+            background: #FFF9E6;
+            border: 2px solid var(--gold);
+            color: var(--primary-color);
+        }
+
+        .stance-support {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+
+        .stance-oppose {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .contact-btn {
+            background: var(--gold);
+            color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: var(--dark-gold);
+            transform: translateY(-2px);
+        }
+
+        .voting-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .voting-table th {
+            background: var(--primary-color);
+            color: var(--gold);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .voting-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .voting-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .vote-yes {
+            color: #28a745;
+            font-weight: 700;
+        }
+
+        .vote-no {
+            color: #dc3545;
+            font-weight: 700;
+        }
+
+        .vote-abstain {
+            color: #ffc107;
+            font-weight: 700;
+        }
+
+        .vote-absent {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .filter-bar {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-bar label {
+            font-weight: 700;
+        }
+
+        .filter-bar select {
+            padding: 0.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .legend {
+            background: #FFF9E6;
+            border: 2px solid var(--gold);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .legend h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="petition-banner">
+        <div class="container">
+            <p>🚨 <strong>Sign the petition now:</strong> 
+                <a href="https://change.org/KeepAmityHuman" target="_blank">change.org/KeepAmityHuman</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>Track Your Rep</h1>
+            <p class="subtitle">Know Who Represents You. Hold Them Accountable.</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="index.html#problem">The Problem</a>
+            <a href="index.html#issues">Key Issues</a>
+            <a href="index.html#email">Take Action</a>
+            <a href="track-your-rep.html">Track Your Rep</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="section">
+            <h2>Amity Board of Education Members</h2>
+            <p class="urgent">These are the people who will decide whether to fund AI grading. Know their names. Know their records. Contact them directly.</p>
+
+            <div class="legend">
+                <h3>Stance on Keep Amity Human:</h3>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FFF9E6; border: 2px solid var(--gold);"></div>
+                    <span><strong>Awaiting Response:</strong> No public position yet. Make your voice heard.</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d4edda; border: 2px solid #28a745;"></div>
+                    <span><strong>Supports Students:</strong> Opposes AI grading platforms.</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f8d7da; border: 2px solid #dc3545;"></div>
+                    <span><strong>Supports AI:</strong> Favors funding AI grading platforms.</span>
+                </div>
+            </div>
+
+            <div class="rep-grid">
+                <!-- Bradley -->
+                <div class="rep-card">
+                    <div class="rep-photo">TB</div>
+                    <div class="rep-name">Tom Bradley</div>
+                    <div class="rep-party">Republican</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">8%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Cloud-Ingram -->
+                <div class="rep-card">
+                    <div class="rep-photo">DC</div>
+                    <div class="rep-name">Danielle Cloud-Ingram</div>
+                    <div class="rep-party">Democrat</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">31%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Davis -->
+                <div class="rep-card">
+                    <div class="rep-photo">PD</div>
+                    <div class="rep-name">Paul Davis</div>
+                    <div class="rep-party">Democrat · Chairperson</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">27%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Jacquet -->
+                <div class="rep-card">
+                    <div class="rep-photo">MJ</div>
+                    <div class="rep-name">Mira Jacquet</div>
+                    <div class="rep-party">Democrat</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">0%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Karunakaran -->
+                <div class="rep-card">
+                    <div class="rep-photo">SK</div>
+                    <div class="rep-name">Sudhir Karunakaran</div>
+                    <div class="rep-party">Democrat</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">4%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Lombardi -->
+                <div class="rep-card">
+                    <div class="rep-photo">JL</div>
+                    <div class="rep-name">James Lombardi</div>
+                    <div class="rep-party">Republican · Secretary</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">27%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- McDonough -->
+                <div class="rep-card">
+                    <div class="rep-photo">TM</div>
+                    <div class="rep-name">Timothy McDonough</div>
+                    <div class="rep-party">Republican</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">4%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Oladele -->
+                <div class="rep-card">
+                    <div class="rep-photo">AO</div>
+                    <div class="rep-name">Abiodun Oladele</div>
+                    <div class="rep-party">Democrat</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">4%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Rabuse -->
+                <div class="rep-card">
+                    <div class="rep-photo">CR</div>
+                    <div class="rep-name">Christopher Rabuse</div>
+                    <div class="rep-party">Republican · Treasurer</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">0%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Reed -->
+                <div class="rep-card">
+                    <div class="rep-photo">PR</div>
+                    <div class="rep-name">Patrick Reed</div>
+                    <div class="rep-party">Democrat · Vice Chairperson</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">0%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Schlank -->
+                <div class="rep-card">
+                    <div class="rep-photo">DS</div>
+                    <div class="rep-name">David Schlank</div>
+                    <div class="rep-party">Republican · Deputy Treasurer</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">27%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Schuster -->
+                <div class="rep-card">
+                    <div class="rep-photo">AS</div>
+                    <div class="rep-name">Andrea Schuster</div>
+                    <div class="rep-party">Democrat</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">4%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+
+                <!-- Young -->
+                <div class="rep-card">
+                    <div class="rep-photo">JY</div>
+                    <div class="rep-name">Jennifer Young</div>
+                    <div class="rep-party">Republican</div>
+                    <div class="rep-stats">
+                        <div class="stat">
+                            <div class="stat-number">27%</div>
+                            <div class="stat-label">Missed Votes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                    </div>
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
+                    </div>
+                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Voting Record</h2>
+            <p>Full transparency on how each Board member has voted. Updated after every meeting.</p>
+
+            <div class="alert">
+                <strong>📊 KEY STATS</strong>
+                <p><strong>Perfect Attendance:</strong> Mira Jacquet, Christopher Rabuse, Patrick Reed (0 missed votes)</p>
+                <p><strong>Most Absences:</strong> Danielle Cloud-Ingram (31% missed), Paul Davis, James Lombardi, David Schlank, Jennifer Young (27% missed)</p>
+                <p><strong>Recent Controversial Vote:</strong> Approve 11/24/25 Minutes - Motion FAILED (first failure in recorded votes)</p>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="voting-table">
+                    <thead>
+                        <tr>
+                            <th>Vote Description</th>
+                            <th>Result</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Approve 11/24/25 Minutes</td>
+                            <td><span class="vote-no">FAILED</span></td>
+                            <td>Feb 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Enter executive session (invite Dr. Byars)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Feb 2, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve ARHS LMC Design Plans</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve January 12, 2026 minutes</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve Policy 6111 School Calendar</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for CNC Maker Fab router</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for special ed transportation services</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for homebound services</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Reduce March Allocation payment by $898,605</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Accept Annual Financial Statements (June 30, 2025)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Approve December 22, 2025 minutes</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 22, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Approve December 08, 2025 minutes</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Approve Policy 6142.101 (School Wellness Policy)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for administrative assistant coverage</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for increased transportation costs</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for special ed services (vacancies/leaves)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Xerox contract ($12,324/month through 2030)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Nov 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Fire pump replacement contract ($148,250)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Nov 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Mercury Electric contract for Brady Center ($45,861)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Nov 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Silver Petrucelli contract for media center design ($34K)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Nov 2025</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="margin-top: 2rem; font-style: italic; color: #666;">
+                <strong>Note:</strong> This voting record is compiled from official Board meeting minutes. If you notice any errors or have updates, email us at <a href="mailto:media@keepamityhuman.org">media@keepamityhuman.org</a>
+            </p>
+        </section>
+
+        <section class="section action-section">
+            <h2>Make Your Voice Heard</h2>
+            <p class="urgent">These Board members work for you. They represent your community. They need to hear from you before they vote.</p>
+
+            <div class="button-group">
+                <a href="index.html#email" class="btn btn-urgent">📧 Generate Your Letter</a>
+                <a href="tel:+12033974830,4824" class="btn btn-call">📞 Call Dr. Byars</a>
+                <a href="https://change.org/KeepAmityHuman" target="_blank" class="btn btn-share">✍️ Sign Petition</a>
+            </div>
+
+            <div class="final-callout">
+                <p><strong>They decide Monday. Make them hear you NOW.</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><strong>Keep Amity Human</strong> — Students, parents, teachers, community</p>
+            <p>Algorithms don't belong in education.</p>
+            <p><a href="https://instagram.com/keepamityhuman" target="_blank" style="color: var(--gold);">Instagram</a> | <a href="https://change.org/KeepAmityHuman" target="_blank" style="color: var(--gold);">Petition</a></p>
+            <p>Media: <a href="mailto:media@keepamityhuman.org" style="color: var(--gold);">media@keepamityhuman.org</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
