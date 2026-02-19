@@ -293,11 +293,15 @@ if (document.getElementById('generateBtn')) {
         }
     });
     
-    // Smooth scrolling for navigation links
+    // Smooth scrolling for hash-only nav links (e.g. #problem, #email)
+    // Skips real page links like index.html or track-your-rep.html
     document.querySelectorAll('nav a').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            const target = document.querySelector(href);
+            if (!target) return;
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
