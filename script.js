@@ -471,10 +471,10 @@ function voteClass(v) {
 }
 
 function voteLabel(v) {
-    if (v === "In favor")    return "✅ In Favor";
-    if (v === "Against")     return "❌ Against";
-    if (v === "Abstain")     return "⚠️ Abstain";
-    if (v === "Not present") return "— Absent";
+    if (v === "In favor")    return "✅";
+    if (v === "Against")     return "❌";
+    if (v === "Abstain")     return "⚠️";
+    if (v === "Not present") return "💤";
     return v;
 }
 
@@ -644,10 +644,10 @@ function evClass(v) {
 }
 
 function evLabel(v) {
-    if (v === "In favor")    return "✅ In Favor";
-    if (v === "Against")     return "❌ Against";
-    if (v === "Abstain")     return "⚠️ Abstain";
-    return "— Absent";
+    if (v === "In favor")    return "✅";
+    if (v === "Against")     return "❌";
+    if (v === "Abstain")     return "⚠️";
+    return "💤";
 }
 
 function repPhotoHTML(id) {
@@ -734,7 +734,7 @@ function buildVoteTable() {
                 } else {
                     html += `<span style="width:28px;height:28px;border-radius:50%;background:#555;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;color:#D4AF37;flex-shrink:0;">${m.initials}</span>`;
                 }
-                html += `<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.name.split(' ').pop()} — ${evLabel(v)}</span></div>`;
+                html += `<span>${m.name.split(' ').pop()} — ${evLabel(v)}</span></div>`;
             });
             html += `</div>`;
         }
