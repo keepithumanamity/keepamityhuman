@@ -323,11 +323,11 @@ if (document.getElementById('generateBtn')) {
         }
     }
     
-    window.onclick = function(event) {
+    window.addEventListener('click', function(event) {
         if (event.target == modal) {
             modal.style.display = 'none';
         }
-    }
+    });
     
     function shareViaEmail() {
         const subject = encodeURIComponent('URGENT: Stop AI Funding at Amity Schools');
