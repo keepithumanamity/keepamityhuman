@@ -293,18 +293,7 @@ if (document.getElementById('generateBtn')) {
         }
     });
     
-    // Smooth scrolling for hash-only nav links (e.g. #problem, #email)
-    // Skips real page links like index.html or track-your-rep.html
-    document.querySelectorAll('nav a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (!href || !href.startsWith('#')) return;
-            const target = document.querySelector(href);
-            if (!target) return;
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-    });
+
     
     // Share Modal Functions
     const shareBtn = document.getElementById('shareBtn');
@@ -404,6 +393,19 @@ if (document.getElementById('generateBtn')) {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 }
+
+// Smooth scrolling for hash-only nav links (e.g. #problem, #email)
+// Skips real page links like index.html or track-your-rep.html
+document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
 
 
 // ============================================================
