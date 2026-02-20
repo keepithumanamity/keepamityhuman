@@ -6,297 +6,6 @@
     <title>Track Your Rep - Keep Amity Human</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .rep-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .rep-card {
-            background: white;
-            border: 3px solid var(--gold);
-            border-radius: 8px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .rep-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .rep-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: #ddd;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--gold);
-            border: 3px solid var(--gold);
-        }
-
-        .rep-name {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .rep-party {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-
-        .rep-stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--gold);
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: #666;
-            text-transform: uppercase;
-        }
-
-        .stance {
-            padding: 0.75rem;
-            border-radius: 4px;
-            font-weight: 700;
-            margin: 1rem 0;
-        }
-
-        .stance-awaiting {
-            background: #FFF9E6;
-            border: 2px solid var(--gold);
-            color: var(--primary-color);
-        }
-
-        .stance-support {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-        }
-
-        .stance-oppose {
-            background: #dc3545;
-            border: 2px solid #8b0000;
-            color: #fff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-            letter-spacing: 1px;
-        }
-
-        /* Evil red card for AI supporters */
-        .rep-card.stance-card-oppose {
-            background: linear-gradient(160deg, #2a0000, #1a0000);
-            border: 3px solid #8b0000;
-            box-shadow: 0 4px 16px rgba(139,0,0,0.5);
-        }
-
-        .rep-card.stance-card-oppose:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 28px rgba(220,20,60,0.6);
-            border-color: #dc3545;
-        }
-
-        .rep-card.stance-card-oppose .rep-name {
-            color: #ff6b6b;
-        }
-
-        .rep-card.stance-card-oppose .rep-party {
-            color: #aaa;
-        }
-
-        .rep-card.stance-card-oppose .rep-stats {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid #8b0000;
-        }
-
-        .rep-card.stance-card-oppose .stat-number {
-            color: #ff6b6b;
-        }
-
-        .rep-card.stance-card-oppose .stat-label {
-            color: #999;
-        }
-
-        .rep-card.stance-card-oppose .rep-card-clickable::after {
-            color: #ff6b6b !important;
-        }
-
-        /* Grayscale + darkened photos for oppose cards — !important to beat inline styles */
-        .rep-card.stance-card-oppose img {
-            filter: grayscale(100%) contrast(110%) brightness(0.65) !important;
-            border-color: #8b0000 !important;
-            box-shadow: 0 0 14px rgba(139,0,0,0.7) !important;
-        }
-
-        .rep-card.stance-card-oppose .rep-photo {
-            border-color: #8b0000 !important;
-            box-shadow: 0 0 14px rgba(139,0,0,0.7);
-            color: #ff6b6b;
-            background: #1a0000;
-        }
-
-        /* Fix click hint text */
-        .rep-card.stance-card-oppose::after {
-            content: '👆 Click for voting history';
-            display: block;
-            margin-top: 0.75rem;
-            font-size: 0.8rem;
-            color: #ff6b6b;
-            font-style: italic;
-        }
-
-        .rep-card.stance-card-oppose:hover::after {
-            color: #ffaaaa;
-        }
-
-        .rep-card.stance-card-oppose .contact-btn {
-            background: #8b0000;
-            color: #ffaaaa;
-            border: 1px solid #dc3545;
-        }
-
-        .rep-card.stance-card-oppose .contact-btn:hover {
-            background: #dc3545;
-            color: white;
-        }
-
-        .contact-btn {
-            background: var(--gold);
-            color: var(--primary-color);
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .contact-btn:hover {
-            background: var(--dark-gold);
-            transform: translateY(-2px);
-        }
-
-        .voting-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .voting-table th {
-            background: var(--primary-color);
-            color: var(--gold);
-            padding: 1rem;
-            text-align: left;
-            font-weight: 700;
-            border-bottom: 3px solid var(--gold);
-        }
-
-        .voting-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .voting-table tr:hover {
-            background: #f5f5f5;
-        }
-
-        .vote-yes {
-            color: #28a745;
-            font-weight: 700;
-        }
-
-        .vote-no {
-            color: #dc3545;
-            font-weight: 700;
-        }
-
-        .vote-abstain {
-            color: #ffc107;
-            font-weight: 700;
-        }
-
-        .vote-absent {
-            color: #6c757d;
-            font-style: italic;
-        }
-
-        .filter-bar {
-            background: #f5f5f5;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-bar label {
-            font-weight: 700;
-        }
-
-        .filter-bar select {
-            padding: 0.5rem;
-            border: 1px solid var(--gold);
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-
-        .legend {
-            background: #FFF9E6;
-            border: 2px solid var(--gold);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-        }
-
-        .legend h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 0.5rem 0;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
-        }
-    </style>
 </head>
 <body>
     <div class="petition-banner">
@@ -347,7 +56,7 @@
 
             <div class="rep-grid">
                 <!-- Bradley -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('bradley')" title="Click to see voting history">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('bradley')" title="Click to see voting history">
                     <div class="rep-photo">CB</div>
                     <div class="rep-name">Cathy Bradley</div>
                     <div class="rep-party">Republican · Orange</div>
@@ -361,15 +70,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#5b39343a293f343d3e3f1b3a36322f22293e3c3234356e7534293c" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Cloud-Ingram -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('cloudingram')" title="Click to see voting history">
-                    <img src="photos/cloudingram.jpg" alt="Autumn Cloud-Ingram" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('cloudingram')" title="Click to see voting history">
+                    <img src="photos/cloudingram.jpg" alt="Autumn Cloud-Ingram" class="rep-photo">
                     <div class="rep-name">Autumn Cloud-Ingram</div>
                     <div class="rep-party">Democrat · Bethany</div>
                     <div class="rep-stats">
@@ -382,15 +91,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#34565b5546505b5251507455595d404d4651535d5b5a011a5b4653" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Davis -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('davis')" title="Click to see voting history">
-                    <img src="photos/davis.jpg" alt="Chairman Davis" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('davis')" title="Click to see voting history">
+                    <img src="photos/davis.jpg" alt="Chairman Davis" class="rep-photo">
                     <div class="rep-name">Paul Davis</div>
                     <div class="rep-party">Democrat · Orange · Chairperson</div>
                     <div class="rep-stats">
@@ -403,15 +112,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#2f4d404e5d4b40494a4b6f4e42465b565d4a484640411a01405d48" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Jacquet -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('jacquet')" title="Click to see voting history">
-                    <img src="photos/jacquet.jpg" alt="Jen Jacquet" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('jacquet')" title="Click to see voting history">
+                    <img src="photos/jacquet.jpg" alt="Jen Jacquet" class="rep-photo">
                     <div class="rep-name">Jennifer Jacquet</div>
                     <div class="rep-party">Democrat · Orange</div>
                     <div class="rep-stats">
@@ -424,15 +133,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#a2c0cdc3d0c6cdc4c7c6e2c3cfcbd6dbd0c7c5cbcdcc978ccdd0c5" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Karunakaran -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('karunakaran')" title="Click to see voting history">
-                    <img src="photos/sudhir.png" alt="Rep. Lombardi" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('karunakaran')" title="Click to see voting history">
+                    <img src="photos/sudhir.png" alt="Rep. Lombardi" class="rep-photo">
                     <div class="rep-name">Sudhir Karunakaran</div>
                     <div class="rep-party">Democrat · Woodbridge</div>
                     <div class="rep-stats">
@@ -445,15 +154,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#debcb1bfacbab1b8bbba9ebfb3b7aaa7acbbb9b7b1b0ebf0b1acb9" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Lombardi -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('lombardi')" title="Click to see voting history">
-                    <img src="photos/Dana Lombardi.jpg" alt="Rep. Lombardi" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('lombardi')" title="Click to see voting history">
+                    <img src="photos/Dana Lombardi.jpg" alt="Rep. Lombardi" class="rep-photo">
                     <div class="rep-name">Dana Lombardi</div>
                     <div class="rep-party">Republican · Orange · Secretary</div>
                     <div class="rep-stats">
@@ -466,15 +175,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#e98b86889b8d868f8c8da98884809d909b8c8e808687dcc7869b8e" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- McDonough -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('mcdonough')" title="Click to see voting history">
-                    <img src="photos/Mike McDonough.jpg" alt="Rep. McDonough" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('mcdonough')" title="Click to see voting history">
+                    <img src="photos/Mike McDonough.jpg" alt="Rep. McDonough" class="rep-photo">
                     <div class="rep-name">Michael McDonough</div>
                     <div class="rep-party">Republican · Orange</div>
                     <div class="rep-stats">
@@ -487,15 +196,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#c4a6aba5b6a0aba2a1a084a5a9adb0bdb6a1a3adabaaf1eaabb6a3" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Oladele -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('oladele')" title="Click to see voting history">
-                    <img src="photos/oladele.jpg" alt="Rep. Lombardi" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('lombardi')" title="Click to see voting history">
+                    <img src="photos/oladele.jpg" alt="Rep. Lombardi" class="rep-photo">
                     <div class="rep-name">Carol Oladele</div>
                     <div class="rep-party">Democrat · Woodbridge</div>
                     <div class="rep-stats">
@@ -508,15 +217,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#0a68656b786e656c6f6e4a6b67637e73786f6d6365643f2465786d" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Rabuse -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('rabuse')" title="Click to see voting history">
-                    <img src="photos/rabuse.jpg" alt="Rep. Rabuse" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('rabuse')" title="Click to see voting history">
+                    <img src="photos/rabuse.jpg" alt="Rep. Rabuse" class="rep-photo">
                     <div class="rep-name">Meghan Rabuse</div>
                     <div class="rep-party">Republican · Woodbridge · Treasurer</div>
                     <div class="rep-stats">
@@ -529,15 +238,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#aeccc1cfdccac1c8cbcaeecfc3c7dad7dccbc9c7c1c09b80c1dcc9" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Reed -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('reed')" title="Click to see voting history">
-                    <img src="photos/reed.png" alt="Rep. Lombardi" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('lombardi')" title="Click to see voting history">
+                    <img src="photos/reed.png" alt="Rep. Lombardi" class="rep-photo">
                     <div class="rep-name">Patrick Reed</div>
                     <div class="rep-party">Democrat · Woodbridge · Vice Chairperson</div>
                     <div class="rep-stats">
@@ -550,15 +259,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#60020f0112040f06050420010d091419120507090f0e554e0f1207" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Schlank -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('schlank')" title="Click to see voting history">
-                    <img src="photos/schlank.jpg" alt="Rep. Lombardi" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('lombardi')" title="Click to see voting history">
+                    <img src="photos/schlank.jpg" alt="Rep. Lombardi" class="rep-photo">
                     <div class="rep-name">Donna Schlank</div>
                     <div class="rep-party">Republican · Bethany · Deputy Treasurer</div>
                     <div class="rep-stats">
@@ -571,15 +280,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#dbb9b4baa9bfb4bdbebf9bbab6b2afa2a9bebcb2b4b5eef5b4a9bc" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Schuster -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('schuster')" title="Click to see voting history">
-                    <img src="photos/schuster.png" alt="Rep. Lombardi" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('lombardi')" title="Click to see voting history">
+                    <img src="photos/schuster.png" alt="Rep. Lombardi" class="rep-photo">
                     <div class="rep-name">Donna Schuster</div>
                     <div class="rep-party">Democrat · Woodbridge</div>
                     <div class="rep-stats">
@@ -592,15 +301,15 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#0b69646a796f646d6e6f4b6a66627f72796e6c6264653e2564796c" class="contact-btn">📧 Email</a>
                 </div>
 
                 <!-- Young -->
-                <div class="rep-card rep-card-clickable" onclick="showVotingHistory('young')" title="Click to see voting history">
-                    <img src="photos/young.jpg" alt="Chris Young" class="rep-photo" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold);">
+                <div class="rep-card stance-card-oppose" onclick="showVotingHistory('young')" title="Click to see voting history">
+                    <img src="photos/young.jpg" alt="Chris Young" class="rep-photo">
                     <div class="rep-name">Christian Young</div>
                     <div class="rep-party">Republican · Orange</div>
                     <div class="rep-stats">
@@ -613,36 +322,17 @@
                             <div class="stat-label">Absent</div>
                         </div>
                     </div>
-                    <div class="stance stance-oppose">
-                        STANCE: Supports AI grading tools
+                    <div class="stance stance-awaiting">
+                        STANCE: Awaiting Response
                     </div>
-                    <a href="mailto:boardofed@amityregion5.org" class="contact-btn">📧 Email</a>
+                    <a href="/cdn-cgi/l/email-protection#ec8e838d9e88838a8988ac8d818598959e898b858382d9c2839e8b" class="contact-btn">📧 Email</a>
                 </div>
             </div>
         </section>
 
         <section class="section">
             <h2>Voting Record</h2>
-            <p>Full transparency on how each Board member has voted. <strong>Click any row to expand individual votes.</strong> Updated after every meeting.</p>
-
-            <style>
-                .vote-row { cursor: pointer; transition: background 0.2s; }
-                .vote-row:hover { background: #FFF9E6 !important; }
-                .vote-row td:first-child::before { content: "▶ "; font-size: 0.7rem; color: var(--gold); }
-                .vote-row.open td:first-child::before { content: "▼ "; }
-                .vote-expand { display: none; background: #f9f9f9; }
-                .vote-expand.show { display: table-row; }
-                .vote-expand td { padding: 0 !important; }
-                .vote-expand-inner { padding: 1.25rem 1.5rem; border-top: 2px solid var(--gold); }
-                .expand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
-                .expand-rep { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
-                .expand-rep img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex-shrink: 0; }
-                .expand-rep .initials { width: 28px; height: 28px; border-radius: 50%; background: #ddd; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; color: var(--gold); flex-shrink: 0; }
-                .ev-favor  { background: #d4edda; color: #155724; }
-                .ev-against { background: #f8d7da; color: #721c24; }
-                .ev-abstain { background: #fff3cd; color: #856404; }
-                .ev-absent  { background: #e9ecef; color: #495057; font-style: italic; }
-            </style>
+            <p>Full transparency on how each Board member has voted. Updated after every meeting.</p>
 
             <div style="overflow-x: auto;">
                 <table class="voting-table">
@@ -653,13 +343,108 @@
                             <th>Date</th>
                         </tr>
                     </thead>
-                    <tbody id="vote-tbody">
+                    <tbody>
+                        <tr>
+                            <td>Enter executive session (invite Dr. Byars)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Feb 2, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve ARHS LMC Design Plans</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Feb 2, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve January 12, 2026 minutes</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Feb 2, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve Policy 6111 School Calendar</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for CNC Maker Fab router</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for special ed transportation services</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for homebound services</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Reduce March Allocation payment by $898,605</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Accept Annual Financial Statements (June 30, 2025)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve December 22, 2025 minutes</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Jan 12, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Approve December 08, 2025 minutes</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 22, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Approve Policy 6142.101 (School Wellness Policy)</td>
+                            <td><span class="vote-no">FAILED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for administrative assistant coverage</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for increased transportation costs</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Budget transfer for special ed services (vacancies/leaves)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Xerox contract ($12,324/month through 2030)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Fire pump replacement contract ($148,250)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Mercury Electric contract for Brady Center ($45,861)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
+                        <tr>
+                            <td>Silver Petrucelli contract for media center design ($34K)</td>
+                            <td><span class="vote-yes">PASSED</span></td>
+                            <td>Dec 8, 2025</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <p style="margin-top: 2rem; font-style: italic; color: #666;">
-                <strong>Note:</strong> This voting record is compiled from official Board meeting minutes. If you notice any errors or have updates, email us at <a href="mailto:media@keepamityhuman.org">media@keepamityhuman.org</a>
+                <strong>Note:</strong> This voting record is compiled from official Board meeting minutes. If you notice any errors or have updates, email us at <a href="/cdn-cgi/l/email-protection#6b060e0f020a2b000e0e1b0a06021f12031e060a054504190c"><span class="__cf_email__" data-cfemail="c3aea6a7aaa283a8a6a6b3a2aeaab7baabb6aea2adedacb1a4">[email&#160;protected]</span></a>
             </p>
         </section>
 
@@ -673,7 +458,7 @@
                 <a href="https://change.org/KeepAmityHuman" target="_blank" class="btn btn-share">✍️ Sign Petition</a>
             </div>
 
-            <div class="final-callout">
+                        <div class="final-callout">
                  <p style="font-size: 1.4rem; font-weight: 900; color: var(--primary-color); text-transform: uppercase; margin: 0.5rem 0;">Your Education Is Too Valuable To Automate.</p>
                 <p style="font-size: 1.4rem; font-weight: 900; color: var(--primary-color); text-transform: uppercase; margin: 0.5rem 0;">Make Them Listen.</p>
             </div>
@@ -682,11 +467,12 @@
 
     <footer>
         <div class="container">
-            <p><strong>Keep Amity Human</strong></p>
-            <p>A student-led initiative at Amity Regional High School</p>
-            <p style="margin-top: 1rem;">
+            <p><strong>Keep Amity Human</strong> — Students, parents, teachers, community</p>
+            <p>Algorithms don't belong in education.</p>
+            <p>
                 <a href="https://instagram.com/keepamityhuman" target="_blank" style="color: var(--gold);">Instagram</a> |
-                <a href="https://change.org/KeepAmityHuman" target="_blank" style="color: var(--gold);">Petition</a>
+                <a href="https://change.org/KeepAmityHuman" target="_blank" style="color: var(--gold);">Petition</a> |
+                <a href="keepamityhuman.org" style="color: var(--gold);">keepamityhuman.org</a>
             </p>
         </div>
     </footer>
