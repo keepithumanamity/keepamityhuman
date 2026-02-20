@@ -359,7 +359,7 @@ function copyShareLink() {
 // Countdown Timer
 // SET THE MEETING DATE HERE - format: 'YYYY-MM-DDTHH:MM:SS'
 // Use a string format 'YYYY-MM-DDTHH:mm:ss' to avoid the zero-based month confusion
-const meetingDate = new Date('2026-02-23T19:00:00').getTime(); 
+const meetingDate = new Date('2026-03-09T19:00:00').getTime(); 
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -567,5 +567,5 @@ function closeVoteModal() {
     document.getElementById('vote-modal').style.display = 'none';
 }
 
-// Init
-buildVoteTable();
+// Init — wait for DOM
+document.addEventListener('DOMContentLoaded', buildVoteTable);
