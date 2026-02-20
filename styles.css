@@ -714,3 +714,312 @@ footer p {
         width: 100%;
     }
 }
+
+
+/* ========================================
+   TRACK YOUR REP — REP CARDS
+   ======================================== */
+
+.rep-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.rep-card {
+    background: white;
+    border: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+
+.rep-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+}
+
+/* Click hint for all cards */
+.rep-card::after {
+    content: '👆 Click for voting history';
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+}
+
+.rep-card:hover::after {
+    color: var(--dark-gold);
+}
+
+.rep-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #ddd;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--gold);
+    border: 3px solid var(--gold);
+    object-fit: cover;
+}
+
+.rep-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.rep-party {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.rep-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.stat { text-align: center; }
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.stance {
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.stance-awaiting {
+    background: #FFF9E6;
+    border: 2px solid var(--gold);
+    color: var(--primary-color);
+}
+
+.stance-support {
+    background: #d4edda;
+    border: 2px solid #28a745;
+    color: #155724;
+}
+
+.stance-oppose {
+    background: #dc3545;
+    border: 2px solid #8b0000;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
+}
+
+.contact-btn {
+    background: var(--gold);
+    color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 1rem;
+    transition: all 0.3s;
+}
+
+.contact-btn:hover {
+    background: var(--dark-gold);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   EVIL RED CARDS — AI SUPPORTERS
+   ======================================== */
+
+.rep-card.stance-card-oppose {
+    background: linear-gradient(160deg, #2a0000, #1a0000);
+    border: 3px solid #8b0000;
+    box-shadow: 0 4px 16px rgba(139,0,0,0.5);
+}
+
+.rep-card.stance-card-oppose:hover {
+    box-shadow: 0 8px 28px rgba(220,20,60,0.6);
+    border-color: #dc3545;
+}
+
+.rep-card.stance-card-oppose::after {
+    color: #ff6b6b;
+}
+
+.rep-card.stance-card-oppose:hover::after {
+    color: #ffaaaa;
+}
+
+.rep-card.stance-card-oppose .rep-name {
+    color: #ff6b6b;
+}
+
+.rep-card.stance-card-oppose .rep-party {
+    color: #aaa;
+}
+
+.rep-card.stance-card-oppose .rep-stats {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid #8b0000;
+}
+
+.rep-card.stance-card-oppose .stat-number {
+    color: #ff6b6b;
+}
+
+.rep-card.stance-card-oppose .stat-label {
+    color: #999;
+}
+
+/* Grayscale photos — removes inline style border too */
+.rep-card.stance-card-oppose img.rep-photo,
+.rep-card.stance-card-oppose img[class="rep-photo"],
+.rep-card.stance-card-oppose img {
+    filter: grayscale(100%) contrast(110%) brightness(0.65) !important;
+    border: 3px solid #8b0000 !important;
+    box-shadow: 0 0 14px rgba(139,0,0,0.7) !important;
+}
+
+/* Initials placeholder for cards without photos */
+.rep-card.stance-card-oppose .rep-photo {
+    border: 3px solid #8b0000 !important;
+    box-shadow: 0 0 14px rgba(139,0,0,0.7);
+    color: #ff6b6b;
+    background: #1a0000;
+}
+
+.rep-card.stance-card-oppose .contact-btn {
+    background: #8b0000;
+    color: #ffaaaa;
+    border: 1px solid #dc3545;
+}
+
+.rep-card.stance-card-oppose .contact-btn:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* ========================================
+   VOTING TABLE
+   ======================================== */
+
+.voting-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.voting-table th {
+    background: var(--primary-color);
+    color: var(--gold);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 3px solid var(--gold);
+}
+
+.voting-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.voting-table tr:hover { background: #f5f5f5; }
+
+.vote-yes   { color: #28a745; font-weight: 700; }
+.vote-no    { color: #dc3545; font-weight: 700; }
+.vote-abstain { color: #ffc107; font-weight: 700; }
+.vote-absent  { color: #6c757d; font-style: italic; }
+
+.filter-bar {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-bar label { font-weight: 700; }
+
+.filter-bar select {
+    padding: 0.5rem;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.legend {
+    background: #FFF9E6;
+    border: 2px solid var(--gold);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.legend h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* Expand rows in voting table */
+.vote-row { cursor: pointer; transition: background 0.2s; }
+.vote-row:hover { background: #FFF9E6 !important; }
+.vote-row td:first-child::before { content: "▶ "; font-size: 0.7rem; color: var(--gold); }
+.vote-row.open td:first-child::before { content: "▼ "; }
+.vote-expand { display: none; background: #f9f9f9; }
+.vote-expand.show { display: table-row; }
+.vote-expand td { padding: 0 !important; }
+.vote-expand-inner { padding: 1.25rem 1.5rem; border-top: 2px solid var(--gold); }
+.expand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+.expand-rep { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; }
+.expand-rep img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); flex-shrink: 0; }
+.expand-rep .initials { width: 28px; height: 28px; border-radius: 50%; background: #ddd; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; color: var(--gold); flex-shrink: 0; }
+.ev-favor   { background: #d4edda; color: #155724; }
+.ev-against { background: #f8d7da; color: #721c24; }
+.ev-abstain { background: #fff3cd; color: #856404; }
+.ev-absent  { background: #e9ecef; color: #495057; font-style: italic; }
