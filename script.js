@@ -309,7 +309,7 @@ if (shareBtn) {
 
 if (closeBtn) {
     closeBtn.onclick = function() {
-        modal.style.display = 'none';
+        if (modal) modal.style.display = 'none';
     }
 }
 
@@ -403,44 +403,58 @@ setInterval(updateCountdown, 1000);
 // ========================================
 
 const votes = [
-    { desc: "Enter executive session (invite Dr. Byars)", result: "PASSED", resultClass: "vote-yes", date: "Feb 2, 2026",
-      individual: { bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
-    { desc: "Approve ARHS LMC Design Plans", result: "PASSED", resultClass: "vote-yes", date: "Feb 2, 2026",
-      individual: { bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
-    { desc: "Approve January 12, 2026 minutes", result: "PASSED", resultClass: "vote-yes", date: "Feb 2, 2026",
-      individual: { bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
-    { desc: "Approve Policy 6111 School Calendar", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Budget transfer for CNC Maker Fab router", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Budget transfer for special ed transportation services", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Budget transfer for homebound services", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Reduce March Allocation payment by $898,605", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Accept Annual Financial Statements (June 30, 2025)", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Approve December 22, 2025 minutes", result: "PASSED", resultClass: "vote-yes", date: "Jan 12, 2026",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Approve December 08, 2025 minutes", result: "PASSED", resultClass: "vote-yes", date: "Dec 22, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Approve Policy 6142.101 (School Wellness Policy)", result: "FAILED", resultClass: "vote-no", date: "Dec 8, 2025",
-      individual: { bradley: "against", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "against", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Budget transfer for administrative assistant coverage", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Budget transfer for increased transportation costs", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Budget transfer for special ed services (vacancies/leaves)", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Xerox contract ($12,324/month through 2030)", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Fire pump replacement contract ($148,250)", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Mercury Electric contract for Brady Center ($45,861)", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
-    { desc: "Silver Petrucelli contract for media center design ($34K)", result: "PASSED", resultClass: "vote-yes", date: "Dec 8, 2025",
-      individual: { bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
+    { desc: "Chair Election", result: "Davis (7-6)", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "against", cloudingram: "against", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "against", mcdonough: "against", oladele: "favor", rabuse: "against", reed: "favor", schlank: "favor", schuster: "favor", young: "against" } },
+    { desc: "Vice Chair Election", result: "Reed (8-5)", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "against", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "against", mcdonough: "against", oladele: "favor", rabuse: "against", reed: "favor", schlank: "favor", schuster: "favor", young: "against" } },
+    { desc: "Secretary Election", result: "Lombardi (unanimous)", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Treasurer Election", result: "Rabuse (unanimous)", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Deputy Treasurer Election", result: "Schlank (unanimous)", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Approve November 24, 2025 minutes", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "abstain", schuster: "abstain", young: "abstain" } },
+    { desc: "Discussion and possible action on setting 2026-27 Calendar", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Silver Petrucelli Associates — media center renovation design ($34K)", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Mercury Electric — Brady Center lighting module ($45,861)", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Encore Fire Protection — fire pump replacement ($148,250)", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Xerox contract — copiers/fax/laser printer ($12,324/mo through 2030)", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Budget transfer — special ed certified positions (vacancy/leaves)", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Budget transfer — special ed increased transportation costs", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Budget transfer — administrative assistant coverage", result: "Motion carries", resultClass: "vote-yes", date: "Dec 8, 2025", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Approve Policy 6142.101 — School Wellness Policy", result: "Motion FAILS", resultClass: "vote-no", date: "Dec 8, 2025", individual: {
+        bradley: "against", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "against", mcdonough: "against", oladele: "against", rabuse: "against", reed: "favor", schlank: "against", schuster: "against", young: "against" } },
+    { desc: "Approve December 8, 2025 minutes", result: "Motion carries", resultClass: "vote-yes", date: "Dec 22, 2025", individual: {
+        bradley: "absent", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "absent", lombardi: "favor", mcdonough: "absent", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "absent", young: "favor" } },
+    { desc: "Approve December 22, 2025 minutes", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "abstain", lombardi: "absent", mcdonough: "favor", oladele: "absent", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "abstain", young: "absent" } },
+    { desc: "Accept Annual Financial Statements (period ending June 30, 2025)", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
+    { desc: "Authorize reduction of March Allocation payment by $898,605", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
+    { desc: "Budget transfer — homebound services", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
+    { desc: "Budget transfer — special ed transportation services", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
+    { desc: "Budget transfer — CNC Maker Fab router", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "favor", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "absent", schuster: "favor", young: "absent" } },
+    { desc: "Approve Policy 6111 — School Calendar", result: "Motion carries", resultClass: "vote-yes", date: "Jan 12, 2026", individual: {
+        bradley: "against", cloudingram: "absent", davis: "absent", jacquet: "favor", karunakaran: "favor", lombardi: "absent", mcdonough: "abstain", oladele: "favor", rabuse: "against", reed: "favor", schlank: "absent", schuster: "favor", young: "favor" } },
+    { desc: "Approve January 12, 2026 minutes", result: "Motion carries", resultClass: "vote-yes", date: "Feb 2, 2026", individual: {
+        bradley: "absent", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Approve ARHS LMC Design Plans", result: "Motion carries", resultClass: "vote-yes", date: "Feb 2, 2026", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
+    { desc: "Enter executive session and invite Dr. Byars", result: "Motion carries", resultClass: "vote-yes", date: "Feb 2, 2026", individual: {
+        bradley: "favor", cloudingram: "favor", davis: "favor", jacquet: "favor", karunakaran: "favor", lombardi: "favor", mcdonough: "favor", oladele: "favor", rabuse: "favor", reed: "favor", schlank: "favor", schuster: "favor", young: "favor" } },
 ];
 
 const repMeta = {
