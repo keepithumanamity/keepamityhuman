@@ -81,7 +81,7 @@ function updateConcernsForRole() {
 }
 
 // Initialize concerns on page load and when role changes
-document.getElementById('role').addEventListener('change', updateConcernsForRole);
+if (document.getElementById('role')) document.getElementById('role').addEventListener('change', updateConcernsForRole);
 
 // Email templates
 const templates = {
@@ -277,9 +277,9 @@ function downloadLetter() {
 }
 
 // Event listeners
-document.getElementById('generateBtn').addEventListener('click', generateLetter);
-document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-document.getElementById('downloadBtn').addEventListener('click', downloadLetter);
+if (document.getElementById('generateBtn')) document.getElementById('generateBtn').addEventListener('click', generateLetter);
+if (document.getElementById('copyBtn')) document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+if (document.getElementById('downloadBtn')) document.getElementById('downloadBtn').addEventListener('click', downloadLetter);
 
 // Mailto button listener (added after letter is generated)
 document.addEventListener('click', function(e) {
@@ -291,9 +291,8 @@ document.addEventListener('click', function(e) {
 // Smooth scrolling for navigation links
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-        e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
 });
 
