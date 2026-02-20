@@ -314,8 +314,12 @@ if (closeBtn) {
 }
 
 window.onclick = function(event) {
-    if (event.target == modal) {
+    if (modal && event.target == modal) {
         modal.style.display = 'none';
+    }
+    const voteModal = document.getElementById('vote-modal');
+    if (voteModal && event.target == voteModal) {
+        voteModal.style.display = 'none';
     }
 }
 
@@ -456,10 +460,10 @@ const repMeta = {
 };
 
 function voteLabel(v) {
-    if (v === "favor")   return { cls: "ev-favor",   text: "✓ In Favor" };
-    if (v === "against") return { cls: "ev-against", text: "✗ Against" };
-    if (v === "abstain") return { cls: "ev-abstain", text: "~ Abstain" };
-    return { cls: "ev-absent", text: "— Absent" };
+    if (v === "favor")   return { cls: "ev-favor",   text: "✓ — In Favor" };
+    if (v === "against") return { cls: "ev-against", text: "✗ — Against" };
+    if (v === "abstain") return { cls: "ev-abstain", text: "⚠ — Abstain" };
+    return { cls: "ev-absent", text: "💤 — Absent" };
 }
 
 function buildVoteTable() {
@@ -533,31 +537,30 @@ function showVotingHistory(repId) {
         myVote: v.individual[repId] || 'absent'
     }));
 
-    const rows = repVotes.map(v => {
-        const { cls, text } = voteLabel(v.myVote);
-        return `<tr>
-            <td>${v.desc}</td>
-            <td><span class="${cls}" style="font-weight:700;">${text}</span></td>
-            <td><span class="${v.resultClass}">${v.result}</span></td>
-            <td style="color:#888;font-size:0.9rem;">${v.date}</td>
-        </tr>`;
-    }).join('');
-
     const absent = repVotes.filter(v => v.myVote === 'absent').length;
     const total = repVotes.length;
     const pct = Math.round((absent / total) * 100);
 
+    const rows = repVotes.map(v => {
+        const { cls, text } = voteLabel(v.myVote);
+        return `<tr class="vote-history-row">
+            <td style="padding:0.75rem 1rem; border-bottom:1px solid #eee;">${v.desc}<br><span style="color:#888;font-size:0.8rem;">${v.date}</span></td>
+            <td style="padding:0.75rem 1rem; border-bottom:1px solid #eee;"><span class="${cls}" style="padding:0.25rem 0.6rem;border-radius:4px;font-weight:700;font-size:0.9rem;">${text}</span></td>
+        </tr>`;
+    }).join('');
+
     document.getElementById('modal-rep-name').textContent = meta.name;
-    document.getElementById('modal-rep-party').textContent = `Missed ${absent} of ${total} votes (${pct}%)`;
+    document.getElementById('modal-rep-party').textContent = `${absent} of ${total} votes missed (${pct}%)`;
     document.getElementById('modal-vote-content').innerHTML = `
-        <div style="overflow-x:auto;">
-        <table class="voting-table">
-            <thead><tr>
-                <th>Vote</th><th>Their Vote</th><th>Outcome</th><th>Date</th>
-            </tr></thead>
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#f5f5f5;">
+                    <th style="padding:0.75rem 1rem;text-align:left;font-weight:700;border-bottom:2px solid var(--gold);">Vote</th>
+                    <th style="padding:0.75rem 1rem;text-align:left;font-weight:700;border-bottom:2px solid var(--gold);">Their Vote</th>
+                </tr>
+            </thead>
             <tbody>${rows}</tbody>
-        </table>
-        </div>`;
+        </table>`;
 
     document.getElementById('vote-modal').style.display = 'block';
 }
