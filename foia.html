@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOIA Records — Keep Amity Human</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .foia-hero {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border-bottom: 4px solid var(--gold);
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+
+        .foia-hero .stamp {
+            display: inline-block;
+            border: 4px solid #cc0000;
+            color: #cc0000;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 0.4rem 1.2rem;
+            transform: rotate(-2deg);
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+        }
+
+        .foia-hero h1 {
+            color: var(--gold);
+            font-size: 2.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.75rem;
+        }
+
+        .foia-hero p {
+            color: #ccc;
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .foia-hero .total-banner {
+            display: inline-block;
+            background: #cc0000;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 900;
+            padding: 0.6rem 2rem;
+            margin-top: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* Rebuttal box */
+        .rebuttal-section {
+            background: #fff9e6;
+            border: 3px solid var(--gold);
+            border-left: 8px solid #cc0000;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 4px;
+        }
+
+        .rebuttal-section h2 {
+            color: #cc0000;
+            font-size: 1.3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .claim-vs-fact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 700px) {
+            .claim-vs-fact { grid-template-columns: 1fr; }
+            .foia-hero h1 { font-size: 1.8rem; }
+        }
+
+        .claim-box, .fact-box {
+            padding: 1.25rem;
+            border-radius: 4px;
+        }
+
+        .claim-box {
+            background: #f0f0f0;
+            border: 2px solid #ccc;
+        }
+
+        .fact-box {
+            background: #fff0f0;
+            border: 2px solid #cc0000;
+        }
+
+        .claim-box .label {
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .fact-box .label {
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #cc0000;
+            margin-bottom: 0.5rem;
+        }
+
+        .claim-box p, .fact-box p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .fact-box strong {
+            color: #cc0000;
+        }
+
+        /* Summary table */
+        .summary-table-wrap {
+            margin: 2.5rem 0;
+        }
+
+        .summary-table-wrap h2 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            background: #1a1a1a;
+            padding: 0.75rem 1.25rem;
+            margin: 0;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+
+        .summary-table th {
+            background: #1a1a1a;
+            color: var(--gold);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .summary-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+            vertical-align: top;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+            font-weight: 900;
+            background: #fff9e6;
+            font-size: 1.05rem;
+        }
+
+        .summary-table tr:hover:not(:last-child) td {
+            background: #fafafa;
+        }
+
+        .tag-hidden {
+            display: inline-block;
+            background: #cc0000;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .tag-admitted {
+            display: inline-block;
+            background: #555;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        /* Invoice cards */
+        .invoices-section h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .invoice-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-left: 5px solid var(--gold);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+
+        .invoice-card.openai {
+            border-left-color: #cc0000;
+        }
+
+        .invoice-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .invoice-vendor {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .invoice-amount {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #cc0000;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .invoice-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem 1.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            background: #f8f8f8;
+            border-radius: 3px;
+            font-size: 0.88rem;
+        }
+
+        .invoice-meta-item {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .invoice-meta-item .meta-label {
+            font-weight: 700;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .invoice-meta-item .meta-value {
+            color: #1a1a1a;
+        }
+
+        .invoice-significance {
+            background: #fff9e6;
+            border: 1px solid #f0c040;
+            border-radius: 3px;
+            padding: 0.75rem 1rem;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: #333;
+            margin-top: 0.75rem;
+        }
+
+        .invoice-significance strong {
+            color: #cc0000;
+        }
+
+        .invoice-card.openai .invoice-significance {
+            background: #fff0f0;
+            border-color: #ffaaaa;
+        }
+
+        /* ICE chain box */
+        .ice-chain {
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem;
+            border-radius: 4px;
+            margin: 2.5rem 0;
+            border: 3px solid #cc0000;
+        }
+
+        .ice-chain h2 {
+            color: #cc0000;
+            font-size: 1.3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.25rem;
+        }
+
+        .chain-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .chain-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .chain-step:last-child {
+            border-bottom: none;
+        }
+
+        .chain-number {
+            background: #cc0000;
+            color: white;
+            font-weight: 900;
+            font-size: 0.85rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .chain-text {
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: #ddd;
+        }
+
+        .chain-text strong {
+            color: white;
+        }
+
+        .chain-text .inv {
+            font-family: monospace;
+            background: #333;
+            padding: 0.1rem 0.4rem;
+            border-radius: 2px;
+            font-size: 0.88rem;
+            color: var(--gold);
+        }
+
+        /* Download section */
+        .download-section {
+            background: #1a1a1a;
+            border: 3px solid var(--gold);
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .download-section h2 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-section p {
+            color: #aaa;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--gold);
+            color: #000;
+            font-weight: 900;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.85rem 2rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+            margin: 0.4rem;
+        }
+
+        .download-btn:hover {
+            background: #e8c84a;
+            transform: translateY(-2px);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .download-btn.secondary {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .download-btn.secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* What they said box */
+        .gap-callout {
+            background: white;
+            border: 3px solid #cc0000;
+            border-radius: 4px;
+            padding: 1.75rem;
+            margin: 2.5rem 0;
+        }
+
+        .gap-callout h2 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #cc0000;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .gap-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #cc0000;
+            line-height: 1;
+        }
+
+        .gap-label {
+            font-size: 0.9rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .gap-callout p {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* bottom CTA */
+        .bottom-cta {
+            background: linear-gradient(135deg, #8B0000, #cc0000);
+            color: white;
+            text-align: center;
+            padding: 2.5rem;
+            border-radius: 4px;
+            margin: 2.5rem 0;
+        }
+
+        .bottom-cta h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .bottom-cta p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .bottom-cta a.cta-btn {
+            display: inline-block;
+            background: var(--gold);
+            color: #000;
+            font-weight: 900;
+            text-decoration: none;
+            padding: 0.85rem 2.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .bottom-cta a.cta-btn:hover {
+            background: #e8c84a;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 2px solid #eee;
+            margin: 2.5rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="petition-banner">
+        <div class="container">
+            <p>🚨 <strong>Board votes March 9th.</strong> Sign the petition and be there: <a href="index.html">keepamityhuman.org</a></p>
+        </div>
+    </div>
+
+    <header class="foia-hero">
+        <div class="container">
+            <div class="stamp">Freedom of Information Act</div>
+            <h1>We Have the Receipts</h1>
+            <p>On February 24, 2026, Keep Amity Human filed a Freedom of Information request with Amity Regional School District No. 5. The district produced purchase orders, invoices, and credit card statements. Here is what they show.</p>
+            <div class="total-banner">Total AI Spending Found: $19,216.51</div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="track-your-rep.html">Track Your Rep</a>
+            <a href="foia.html" style="color: var(--gold); font-weight: 900;">FOIA Records</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- REBUTTAL -->
+        <section class="rebuttal-section">
+            <h2>⚠ The District Said $11,000. The Records Say $19,216.51.</h2>
+            <p style="margin-bottom: 1.25rem; font-size: 0.95rem; color: #333;">On February 24, 2026, the district sent Student Happenings #26 responding to student concerns. Here is what they claimed versus what the FOIA records show.</p>
+
+            <div class="claim-vs-fact">
+                <div class="claim-box">
+                    <div class="label">What the District Said</div>
+                    <p>"Amity is <strong>not increasing</strong> its spending on AI platforms this year. Amity purchased Magic School AI in the 2025-26 school year for <strong>$11,000</strong>."</p>
+                </div>
+                <div class="fact-box">
+                    <div class="label">What the FOIA Shows</div>
+                    <p>The district spent <strong>$19,216.51</strong> across five AI products. They named one. The records document four more — including <strong>two direct OpenAI/ChatGPT contracts</strong> totaling $7,416.53.</p>
+                </div>
+            </div>
+
+            <div class="claim-vs-fact" style="margin-top: 1rem;">
+                <div class="claim-box">
+                    <div class="label">What the District Said</div>
+                    <p>"There is <strong>no evidence or credible claims</strong> connecting MagicSchool AI to U.S. Immigration and Customs Enforcement."</p>
+                </div>
+                <div class="fact-box">
+                    <div class="label">What the FOIA Shows</div>
+                    <p>The district holds two active, paid, direct contracts with <strong>OpenAI</strong> — the company with a documented ICE contract. Invoice numbers and check amounts are below.</p>
+                </div>
+            </div>
+
+            <div class="claim-vs-fact" style="margin-top: 1rem;">
+                <div class="claim-box">
+                    <div class="label">What the District Said</div>
+                    <p>"We are working on obtaining an original copy of the <strong>AI policy for teachers</strong>, as well as a full listing of the AI tools that the district pays for."</p>
+                </div>
+                <div class="fact-box">
+                    <div class="label">What This Means</div>
+                    <p>The district cited a policy it <strong>does not yet have in hand</strong> as evidence students have nothing to worry about. They also admitted they cannot produce a complete list of AI tools they are funding.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY TABLE -->
+        <div class="summary-table-wrap">
+            <h2>All AI Spending — At a Glance</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Vendor</th>
+                        <th>Product</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Dept</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>MagicSchool AI</strong></td>
+                        <td>Enterprise — 2,200 seats</td>
+                        <td><strong>$11,000.00</strong></td>
+                        <td>Jul 1, 2025</td>
+                        <td>Technology</td>
+                        <td><span class="tag-admitted">Admitted</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI / ChatGPT</strong></td>
+                        <td>Team Subscription — 19 seats</td>
+                        <td><strong>$6,061.95</strong></td>
+                        <td>Jul 16, 2025</td>
+                        <td>Technology</td>
+                        <td><span class="tag-hidden">Hidden</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI / ChatGPT</strong></td>
+                        <td>6 Additional Seats</td>
+                        <td><strong>$1,354.58</strong></td>
+                        <td>Oct 22, 2025</td>
+                        <td>Technology</td>
+                        <td><span class="tag-hidden">Hidden</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Snorkl</strong></td>
+                        <td>Premium School Pilot Unlimited</td>
+                        <td><strong>$500.00</strong></td>
+                        <td>Nov 17, 2025</td>
+                        <td>Technology</td>
+                        <td><span class="tag-hidden">Hidden</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Diffit</strong></td>
+                        <td>Individual Teacher Subscriptions (2)</td>
+                        <td><strong>$299.98</strong></td>
+                        <td>Nov 5, 2025</td>
+                        <td>Staff Dev.</td>
+                        <td><span class="tag-hidden">Hidden</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>TOTAL AI SPENDING</strong></td>
+                        <td><strong>$19,216.51</strong></td>
+                        <td colspan="3">All signed by Director of Finance and Superintendent</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- GAP CALLOUT -->
+        <div class="gap-callout">
+            <h2>The Gap They Hoped You Wouldn't Notice</h2>
+            <div class="gap-number">$8,216.51</div>
+            <div class="gap-label">In AI spending not mentioned in the district's newsletter</div>
+            <p>The district's response to student concerns named one product and one dollar amount. The FOIA records document four additional AI tools purchased this school year, spread across two departments and three vendors. Whether the omission was intentional or reflects a genuine lack of internal awareness — the administration's own email admits they are still working on obtaining a complete list of AI tools the district funds — the effect is the same: students were given an incomplete picture.</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- INVOICE CARDS -->
+        <section class="invoices-section">
+            <h2>Full Invoice Breakdown</h2>
+
+            <!-- MagicSchool -->
+            <div class="invoice-card">
+                <div class="invoice-card-header">
+                    <div>
+                        <div class="invoice-vendor">MagicSchool AI <span class="tag-admitted">Admitted by District</span></div>
+                        <div style="font-size: 0.88rem; color: #666; margin-top: 0.2rem;">MagicSchool, Inc. · PO Box 18489, Palatine, IL 60055</div>
+                    </div>
+                    <div class="invoice-amount">$11,000.00</div>
+                </div>
+                <div class="invoice-meta">
+                    <div class="invoice-meta-item"><span class="meta-label">PO Number:</span><span class="meta-value">00300095</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">PO Date:</span><span class="meta-value">June 20, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice #:</span><span class="meta-value">2945</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice Date:</span><span class="meta-value">July 1, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Due Date:</span><span class="meta-value">July 31, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Payment:</span><span class="meta-value">Check #284325, Aug 27, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Seats:</span><span class="meta-value">2,200 @ $5.00/seat</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Term:</span><span class="meta-value">Jul 1, 2025 – Jun 30, 2026</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Department:</span><span class="meta-value">Technology Dept · GL #05142350-5695</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice Status:</span><span class="meta-value" style="color:#cc0000; font-weight:700;">Marked Overdue</span></div>
+                </div>
+                <div class="invoice-significance">
+                    The district's newsletter cited this product by name. 2,200 seats for a school of approximately 1,800 students means every enrolled student has a seat. The invoice was marked <strong>overdue</strong> before payment was processed in late August — meaning the contract was already active before it was fully paid. The subscription automatically extends into the next school year.
+                </div>
+            </div>
+
+            <!-- ChatGPT Team -->
+            <div class="invoice-card openai">
+                <div class="invoice-card-header">
+                    <div>
+                        <div class="invoice-vendor">OpenAI / ChatGPT <span class="tag-hidden">Not Mentioned by District</span></div>
+                        <div style="font-size: 0.88rem; color: #666; margin-top: 0.2rem;">Team Subscription — 19 Seats · openai.com</div>
+                    </div>
+                    <div class="invoice-amount">$6,061.95</div>
+                </div>
+                <div class="invoice-meta">
+                    <div class="invoice-meta-item"><span class="meta-label">PO Number:</span><span class="meta-value">00300553</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">PO Date:</span><span class="meta-value">August 11, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice #:</span><span class="meta-value">YTMZUVSM-0002</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice Date:</span><span class="meta-value">July 16, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Seats:</span><span class="meta-value">19 @ $300.00/seat</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Subtotal:</span><span class="meta-value">$5,700.00</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">CT Sales Tax (6.35%):</span><span class="meta-value">$361.95</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Term:</span><span class="meta-value">Jul 16, 2025 – Jul 16, 2026</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Payment:</span><span class="meta-value">US Bank credit card, Jul 17–18, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Department:</span><span class="meta-value">Technology Dept</span></div>
+                </div>
+                <div class="invoice-significance">
+                    This is a <strong>direct contract with OpenAI</strong> — not a third-party tool built on OpenAI's platform. The district pays OpenAI directly. OpenAI holds an active contract with U.S. Immigration and Customs Enforcement. The district's newsletter stated there were "no evidence or credible claims" connecting district AI spending to ICE. <strong>Invoice #YTMZUVSM-0002 is that evidence.</strong>
+                </div>
+            </div>
+
+            <!-- ChatGPT 6 seats -->
+            <div class="invoice-card openai">
+                <div class="invoice-card-header">
+                    <div>
+                        <div class="invoice-vendor">OpenAI / ChatGPT <span class="tag-hidden">Not Mentioned by District</span></div>
+                        <div style="font-size: 0.88rem; color: #666; margin-top: 0.2rem;">6 Additional Seats — Expansion Purchase · October 2025</div>
+                    </div>
+                    <div class="invoice-amount">$1,354.58</div>
+                </div>
+                <div class="invoice-meta">
+                    <div class="invoice-meta-item"><span class="meta-label">PO Number:</span><span class="meta-value">00301048</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">PO Date:</span><span class="meta-value">October 17, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Seats:</span><span class="meta-value">6 additional</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Subtotal:</span><span class="meta-value">$1,341.17</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Tax:</span><span class="meta-value">$13.41</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Payment:</span><span class="meta-value">US Bank credit card, Oct 22–23, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">CC Statement:</span><span class="meta-value">OPENAI *CHATGPT SUBSCR OPENAI.COM CA</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Department:</span><span class="meta-value">Technology Dept</span></div>
+                </div>
+                <div class="invoice-significance">
+                    The district did not inherit this contract — they <strong>actively chose to expand it</strong> three months into the school year. This was a deliberate decision to increase the district's direct relationship with OpenAI, made without any student notification or public discussion.
+                </div>
+            </div>
+
+            <!-- Snorkl -->
+            <div class="invoice-card">
+                <div class="invoice-card-header">
+                    <div>
+                        <div class="invoice-vendor">Snorkl <span class="tag-hidden">Not Mentioned by District</span></div>
+                        <div style="font-size: 0.88rem; color: #666; margin-top: 0.2rem;">Snorkl Software · 5383 Balboa Ave, San Diego, CA 92117</div>
+                    </div>
+                    <div class="invoice-amount">$500.00</div>
+                </div>
+                <div class="invoice-meta">
+                    <div class="invoice-meta-item"><span class="meta-label">PO Number:</span><span class="meta-value">00301202</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">PO Date:</span><span class="meta-value">November 17, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice #:</span><span class="meta-value">JPI1EYDA-0001</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice Date:</span><span class="meta-value">November 19, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Due Date:</span><span class="meta-value">December 19, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Payment:</span><span class="meta-value">Check #284841, Nov 25, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Product:</span><span class="meta-value">Premium School Pilot Unlimited — SY2024-2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Department:</span><span class="meta-value">Technology Dept</span></div>
+                </div>
+                <div class="invoice-significance">
+                    Snorkl is an AI tool that listens to and evaluates student speech and written explanations. Students demonstrate understanding verbally; the AI provides feedback and assessment. This was purchased in November 2025 with <strong>no public announcement and no student notification.</strong>
+                </div>
+            </div>
+
+            <!-- Diffit -->
+            <div class="invoice-card">
+                <div class="invoice-card-header">
+                    <div>
+                        <div class="invoice-vendor">Diffit <span class="tag-hidden">Not Mentioned by District</span></div>
+                        <div style="font-size: 0.88rem; color: #666; margin-top: 0.2rem;">Diffit Inc. · 1932 Blake Street, Berkeley, CA 94704</div>
+                    </div>
+                    <div class="invoice-amount">$299.98</div>
+                </div>
+                <div class="invoice-meta">
+                    <div class="invoice-meta-item"><span class="meta-label">PO Number:</span><span class="meta-value">00301141-003</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">PO Date:</span><span class="meta-value">November 5, 2025</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Invoice #:</span><span class="meta-value">IIZLKSHD-0001</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Subscriptions:</span><span class="meta-value">2 individual teacher plans @ $149.99</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Teachers:</span><span class="meta-value">Katie Beezer & Nicole Raiola</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Term:</span><span class="meta-value">Jan 6, 2026 – Jan 6, 2027</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Payment:</span><span class="meta-value">US Bank credit card (Dec and Jan statements)</span></div>
+                    <div class="invoice-meta-item"><span class="meta-label">Department:</span><span class="meta-value">Staff Development (not Technology)</span></div>
+                </div>
+                <div class="invoice-significance">
+                    Diffit is an AI tool that generates differentiated reading materials and lesson content. Notably, this purchase was routed through <strong>Staff Development rather than Technology</strong>, making it invisible in any single-department budget review. Whether intentional or not, purchasing AI tools through multiple department budgets makes the true total harder to see at a glance.
+                </div>
+            </div>
+        </section>
+
+        <!-- ICE CHAIN -->
+        <div class="ice-chain">
+            <h2>🔗 The OpenAI–ICE Chain, Documented</h2>
+            <div class="chain-steps">
+                <div class="chain-step">
+                    <div class="chain-number">1</div>
+                    <div class="chain-text">OpenAI holds an active contract with U.S. Immigration and Customs Enforcement (ICE). This is documented public record, reported by multiple national news outlets.</div>
+                </div>
+                <div class="chain-step">
+                    <div class="chain-number">2</div>
+                    <div class="chain-text">Amity Regional School District No. 5 holds an active, paid, direct subscription to OpenAI's ChatGPT Team product. <span class="inv">Invoice #YTMZUVSM-0002</span> — dated July 16, 2025 — documents the contract. Payment confirmed by US Bank credit card statement: <span class="inv">OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $6,061.95</span>.</div>
+                </div>
+                <div class="chain-step">
+                    <div class="chain-number">3</div>
+                    <div class="chain-text">In October 2025, the district expanded that same OpenAI contract by six additional seats for <strong>$1,354.58</strong>. This was a deliberate expansion, not a legacy renewal.</div>
+                </div>
+                <div class="chain-step">
+                    <div class="chain-number">4</div>
+                    <div class="chain-text">Total direct OpenAI payments by Amity Regional School District, documented by FOIA: <strong>$7,416.53</strong>. Both contracts signed by the Director of Finance and the Superintendent of Schools.</div>
+                </div>
+                <div class="chain-step">
+                    <div class="chain-number">5</div>
+                    <div class="chain-text">The district's February 24, 2026 newsletter stated there are "no evidence or credible claims" connecting district AI spending to ICE. The FOIA records above are the evidence. The invoices are the claims.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOWNLOAD -->
+        <div class="download-section">
+            <h2>📄 Download the FOIA Records</h2>
+            <p>All records are public documents obtained through a Freedom of Information Act request to Amity Regional School District No. 5. Download and share freely.</p>
+            <button class="download-btn" onclick="downloadFOIASummary()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
+                Download Full Summary (CSV)
+            </button>
+            <button class="download-btn secondary" onclick="downloadFOIAText()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
+                Download Invoice Detail (TXT)
+            </button>
+        </div>
+
+        <!-- CTA -->
+        <div class="bottom-cta">
+            <h2>The Board Votes March 9th</h2>
+            <p>Public hearing March 6th. Full vote March 9th. Be there. Bring this page.</p>
+            <a href="index.html" class="cta-btn">Sign the Petition → keepamityhuman.org</a>
+        </div>
+
+    </main>
+
+    <footer style="background: #1a1a1a; color: #aaa; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: 3rem; border-top: 3px solid var(--gold);">
+        <p>Keep Amity Human · FOIA records obtained February 24, 2026 · Amity Regional School District No. 5, Woodbridge CT</p>
+        <p style="margin-top: 0.5rem;"><a href="index.html" style="color: var(--gold);">keepamityhuman.org</a></p>
+    </footer>
+
+    <script>
+        function downloadFOIASummary() {
+            const csv = `Vendor,Product,Amount,PO Number,Date,Department,Status
+MagicSchool AI,"Enterprise Subscription — 2200 seats","$11,000.00",00300095,2025-07-01,Technology,Admitted by District
+OpenAI / ChatGPT,"Team Subscription — 19 seats","$6,061.95",00300553,2025-07-16,Technology,Not mentioned in district newsletter
+OpenAI / ChatGPT,"6 Additional Seats","$1,354.58",00301048,2025-10-17,Technology,Not mentioned in district newsletter
+Snorkl,"Premium School Pilot Unlimited","$500.00",00301202,2025-11-17,Technology,Not mentioned in district newsletter
+Diffit,"Individual Teacher Subscriptions (2)","$299.98",00301141-003,2025-11-05,Staff Development,Not mentioned in district newsletter
+TOTAL,,,,,,"$19,216.51"`;
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'amity-foia-ai-spending-2025-26.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadFOIAText() {
+            const text = `FREEDOM OF INFORMATION ACT REQUEST
+Amity Regional School District No. 5
+AI Platform Spending — School Year 2025-2026
+Records obtained: February 24, 2026
+
+════════════════════════════════════════════════════════
+SUMMARY
+════════════════════════════════════════════════════════
+Total AI Spending Documented: $19,216.51
+District-Admitted Amount (Student Happenings #26): $11,000.00
+Undisclosed Amount: $8,216.51
+
+════════════════════════════════════════════════════════
+RECORD 1: MAGICSCHOOL AI
+════════════════════════════════════════════════════════
+Vendor: MagicSchool, Inc.
+Address: PO Box 18489, Palatine, IL 60055-8489
+PO Number: 00300095
+PO Date: June 20, 2025
+Invoice Number: 2945
+Invoice Date: July 1, 2025
+Due Date: July 31, 2025 (marked Overdue)
+Product: MagicSchool Enterprise — 1-Year Partnership Renewal
+Seats: 2,200 @ $5.00/seat
+Total: $11,000.00
+Payment: Check #284325, August 27, 2025
+GL Account: 05142350-5695
+Department: Technology Dept
+Term: July 1, 2025 – June 30, 2026
+Status: Admitted in district newsletter
+
+════════════════════════════════════════════════════════
+RECORD 2: OPENAI / CHATGPT — TEAM SUBSCRIPTION
+════════════════════════════════════════════════════════
+Vendor: OpenAI (openai.com)
+PO Number: 00300553
+PO Date: August 11, 2025
+Invoice Number: YTMZUVSM-0002
+Invoice Date: July 16, 2025
+Product: ChatGPT Team Subscription
+Seats: 19 @ $300.00/seat = $5,700.00
+CT Sales Tax (6.35%): $361.95
+Total: $6,061.95
+Payment: US Bank Corporate Credit Card
+CC Statement Entry: OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $6,061.95
+Statement Date: July 25, 2025
+Term: July 16, 2025 – July 16, 2026
+Department: Technology Dept
+Status: NOT mentioned in district newsletter
+
+NOTE: OpenAI holds an active contract with U.S. Immigration
+and Customs Enforcement (ICE). This invoice documents a direct
+financial relationship between Amity Regional School District
+and OpenAI.
+
+════════════════════════════════════════════════════════
+RECORD 3: OPENAI / CHATGPT — 6 ADDITIONAL SEATS
+════════════════════════════════════════════════════════
+Vendor: OpenAI (openai.com)
+PO Number: 00301048
+PO Date: October 17, 2025
+Product: ChatGPT — 6 Additional Seats
+Subtotal: $1,341.17
+Tax: $13.41
+Total: $1,354.58
+Payment: US Bank Corporate Credit Card
+CC Statement Entry: OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $1,329.57
+Statement Date: October 27, 2025
+Department: Technology Dept
+Status: NOT mentioned in district newsletter
+
+NOTE: This represents an active expansion of the OpenAI
+contract three months into the school year.
+
+════════════════════════════════════════════════════════
+RECORD 4: SNORKL
+════════════════════════════════════════════════════════
+Vendor: Snorkl
+Address: 5383 Balboa Ave, San Diego, CA 92117
+PO Number: 00301202
+PO Date: November 17, 2025
+Invoice Number: JPI1EYDA-0001
+Invoice Date: November 19, 2025
+Due Date: December 19, 2025
+Product: Snorkl Premium School Pilot Unlimited — SY2024-2025
+Total: $500.00
+Payment: Check #284841, November 25, 2025
+Department: Technology Dept
+Status: NOT mentioned in district newsletter
+
+════════════════════════════════════════════════════════
+RECORD 5: DIFFIT
+════════════════════════════════════════════════════════
+Vendor: Diffit Inc.
+Address: 1932 Blake Street, Berkeley, CA 94704
+PO Number: 00301141-003
+PO Date: November 5, 2025
+Invoice Number: IIZLKSHD-0001
+Invoice Date: January 6, 2026
+Product: Annual Premium Access Individual Teacher Subscription
+Subscribers: Katie Beezer, Nicole Raiola (2 subscriptions @ $149.99)
+Total: $299.98
+Payment: US Bank Corporate Credit Card
+CC Statement (12/26/2025): DIFFIT WEB.DIFFIT.ME CA
+CC Statement (01/26/2026): DIFFIT WEB.DIFFIT.ME CA — $149.99 (01/06 transaction)
+Term: January 6, 2026 – January 6, 2027
+Department: Staff Development (NOT Technology)
+Status: NOT mentioned in district newsletter
+
+════════════════════════════════════════════════════════
+All purchases signed by:
+- Director of Finance and Administration
+- Superintendent of Schools, Amity Regional School District No. 5
+
+Records obtained via Freedom of Information Act request.
+All documents are public records.
+
+keepamityhuman.org | Board votes March 9, 2026`;
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'amity-foia-ai-spending-full-detail.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+</body>
+</html>
