@@ -835,13 +835,13 @@
         <div class="download-section">
             <h2>📄 Download the FOIA Records</h2>
             <p>All records are public documents obtained through a Freedom of Information Act request to Amity Regional School District No. 5. Download and share freely.</p>
-            <button class="download-btn" onclick="downloadFOIASummary()">
+            <a class="download-btn" href="https://raw.githubusercontent.com/keepithumanamity/keepamityhuman/main/AI%20FOI%20Request%202-24-2026.pdf" download="AI-FOI-Request-2-24-2026.pdf" target="_blank">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
-                Download Full Summary (CSV)
-            </button>
+                Download Original FOIA Packet (PDF)
+            </a>
             <button class="download-btn secondary" onclick="downloadFOIAText()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
-                Download Invoice Detail (TXT)
+                Download Invoice Summary (TXT)
             </button>
         </div>
 
@@ -854,30 +854,16 @@
 
     </main>
 
-    <footer style="background: #1a1a1a; color: #aaa; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: 3rem; border-top: 3px solid var(--gold);">
-        <p>Keep Amity Human · FOIA records obtained February 24, 2026 · Amity Regional School District No. 5, Woodbridge CT</p>
-        <p style="margin-top: 0.5rem;"><a href="index.html" style="color: var(--gold);">keepamityhuman.org</a></p>
+    <footer>
+        <div class="container">
+            <p><strong>Keep Amity Human</strong> — Students, parents, teachers, community</p>
+            <p>Algorithms don't belong in education.</p>
+            <p><a href="https://instagram.com/keepamityhuman" target="_blank" style="color: var(--gold);">Instagram</a> | <a href="https://change.org/KeepAmityHuman" target="_blank" style="color: var(--gold);">Petition</a></p>
+            <p>Media: <a href="mailto:media@keepamityhuman.org" style="color: var(--gold);">media@keepamityhuman.org</a></p>
+        </div>
     </footer>
 
     <script>
-        function downloadFOIASummary() {
-            const csv = `Vendor,Product,Amount,PO Number,Date,Department,Status
-MagicSchool AI,"Enterprise Subscription — 2200 seats","$11,000.00",00300095,2025-07-01,Technology,Admitted by District
-OpenAI / ChatGPT,"Team Subscription — 19 seats","$6,061.95",00300553,2025-07-16,Technology,Not mentioned in district newsletter
-OpenAI / ChatGPT,"6 Additional Seats","$1,354.58",00301048,2025-10-17,Technology,Not mentioned in district newsletter
-Snorkl,"Premium School Pilot Unlimited","$500.00",00301202,2025-11-17,Technology,Not mentioned in district newsletter
-Diffit,"Individual Teacher Subscriptions (2)","$299.98",00301141-003,2025-11-05,Staff Development,Not mentioned in district newsletter
-TOTAL,,,,,,"$19,216.51"`;
-
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'amity-foia-ai-spending-2025-26.csv';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
         function downloadFOIAText() {
             const text = `FREEDOM OF INFORMATION ACT REQUEST
 Amity Regional School District No. 5
@@ -923,7 +909,7 @@ Seats: 19 @ $300.00/seat = $5,700.00
 CT Sales Tax (6.35%): $361.95
 Total: $6,061.95
 Payment: US Bank Corporate Credit Card
-CC Statement Entry: OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $6,061.95
+CC Statement: OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $6,061.95
 Statement Date: July 25, 2025
 Term: July 16, 2025 – July 16, 2026
 Department: Technology Dept
@@ -945,13 +931,12 @@ Subtotal: $1,341.17
 Tax: $13.41
 Total: $1,354.58
 Payment: US Bank Corporate Credit Card
-CC Statement Entry: OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $1,329.57
+CC Statement: OPENAI *CHATGPT SUBSCR OPENAI.COM CA — $1,329.57
 Statement Date: October 27, 2025
 Department: Technology Dept
 Status: NOT mentioned in district newsletter
 
-NOTE: This represents an active expansion of the OpenAI
-contract three months into the school year.
+NOTE: Active expansion of the OpenAI contract, October 2025.
 
 ════════════════════════════════════════════════════════
 RECORD 4: SNORKL
@@ -979,11 +964,11 @@ PO Date: November 5, 2025
 Invoice Number: IIZLKSHD-0001
 Invoice Date: January 6, 2026
 Product: Annual Premium Access Individual Teacher Subscription
-Subscribers: Katie Beezer, Nicole Raiola (2 subscriptions @ $149.99)
+Subscribers: Katie Beezer, Nicole Raiola (2 x $149.99)
 Total: $299.98
 Payment: US Bank Corporate Credit Card
 CC Statement (12/26/2025): DIFFIT WEB.DIFFIT.ME CA
-CC Statement (01/26/2026): DIFFIT WEB.DIFFIT.ME CA — $149.99 (01/06 transaction)
+CC Statement (01/26/2026): DIFFIT WEB.DIFFIT.ME CA — $149.99
 Term: January 6, 2026 – January 6, 2027
 Department: Staff Development (NOT Technology)
 Status: NOT mentioned in district newsletter
@@ -993,8 +978,7 @@ All purchases signed by:
 - Director of Finance and Administration
 - Superintendent of Schools, Amity Regional School District No. 5
 
-Records obtained via Freedom of Information Act request.
-All documents are public records.
+Original FOIA packet: https://raw.githubusercontent.com/keepithumanamity/keepamityhuman/main/AI%20FOI%20Request%202-24-2026.pdf
 
 keepamityhuman.org | Board votes March 9, 2026`;
 
@@ -1002,7 +986,7 @@ keepamityhuman.org | Board votes March 9, 2026`;
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'amity-foia-ai-spending-full-detail.txt';
+            a.download = 'amity-foia-summary.txt';
             a.click();
             URL.revokeObjectURL(url);
         }
