@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Campaign Archive — Keep Amity Human</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ========================================
+           EMAIL ARCHIVE — PAGE-SPECIFIC STYLES
+           ======================================== */
+
+        .archive-intro {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 2px solid var(--gold);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .archive-intro p {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-top: 0.75rem;
+        }
+
+        .archive-intro strong {
+            color: var(--gold);
+        }
+
+        .archive-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .archive-stat {
+            text-align: center;
+        }
+
+        .archive-stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            display: block;
+        }
+
+        .archive-stat-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Email Cards */
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .email-card {
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .email-card:hover {
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+            border-color: var(--dark-gold);
+        }
+
+        .email-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            background: #fafafa;
+            border-bottom: 2px solid transparent;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .email-header:hover {
+            background: #FFF9E6;
+        }
+
+        .email-card.open .email-header {
+            background: #FFF9E6;
+            border-bottom-color: var(--gold);
+        }
+
+        .day-badge {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            font-weight: 900;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .email-meta {
+            flex: 1;
+        }
+
+        .email-subject {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        .email-date {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.2rem;
+            font-style: italic;
+        }
+
+        .email-toggle {
+            font-size: 1.2rem;
+            color: var(--gold);
+            font-weight: 900;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+
+        .email-card.open .email-toggle {
+            transform: rotate(180deg);
+        }
+
+        .email-body {
+            display: none;
+            padding: 2rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            border-top: 2px solid var(--gold);
+        }
+
+        .email-card.open .email-body {
+            display: block;
+        }
+
+        .email-body p {
+            margin-bottom: 1.2rem;
+        }
+
+        .email-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .email-body .ps {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #ddd;
+            font-size: 0.95rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        .email-body blockquote {
+            background: #FFF9E6;
+            border-left: 4px solid var(--gold);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 4px 4px 0;
+            font-style: italic;
+        }
+
+        .email-body ul, .email-body ol {
+            margin: 1rem 0 1rem 1.75rem;
+        }
+
+        .email-body li {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+
+        .email-body strong {
+            color: var(--primary-color);
+        }
+
+        .email-body .highlight-stat {
+            background: linear-gradient(135deg, #000, #1a1a1a);
+            color: var(--gold);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 700;
+            text-align: center;
+            margin: 1.25rem 0;
+            font-size: 1.1rem;
+        }
+
+        .email-sig {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gold);
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .email-sig a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* Special card for Day 3.5 */
+        .email-card.half-day .day-badge {
+            background: linear-gradient(135deg, #1a0000, #2a0000);
+            border-color: #8b0000;
+            color: #ff9999;
+        }
+
+        /* Filter/search bar */
+        .archive-controls {
+            background: #f5f5f5;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .archive-controls label {
+            font-weight: 700;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        .archive-search {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .archive-search:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-expand-all {
+            background: var(--primary-color);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 0.6rem 1.25rem;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-expand-all:hover {
+            background: var(--gold);
+            color: var(--primary-color);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #888;
+            font-style: italic;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .archive-stats {
+                gap: 1.5rem;
+            }
+
+            .email-subject {
+                font-size: 1rem;
+            }
+
+            .email-body {
+                padding: 1.25rem;
+            }
+
+            .archive-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="petition-banner">
+        <div class="container">
+            <p>🚨 <strong>March 9th Board Vote — Make your voice heard:</strong>
+                <a href="index.html#email">Take Action Now</a>
+            </p>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1>Keep Amity Human</h1>
+            <p class="subtitle">Email Campaign Archive — 16 Days of Documentation</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="index.html#problem">The Problem</a>
+            <a href="index.html#issues">Key Issues</a>
+            <a href="index.html#email">Take Action</a>
+            <a href="track-your-rep.html">Track Your Rep</a>
+            <a href="foia.html">FOIA Records</a>
+            <a href="email-campaign.html" style="color: white; text-decoration: underline;">Email Archive</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="section">
+            <h2>The Daily Email Campaign</h2>
+
+            <div class="archive-intro">
+                <p>Starting February 10th, 2026, Keep Amity Human sent a documented email to the Amity Board of Education <strong>every single day</strong> until something was done. Each email built the case against AI grading platform funding from a different angle — ethics, the double standard, grading errors, data privacy, environmental hypocrisy, racial bias, slippery slope, and what it means to be a student right now.</p>
+                <p>This is the full public archive. Read it in order. Read it all. Then go to <a href="index.html#email" style="color: var(--gold); font-weight: 900;">Take Action</a> and do something about it.</p>
+                <div class="archive-stats">
+                    <div class="archive-stat">
+                        <span class="archive-stat-number">17</span>
+                        <span class="archive-stat-label">Days Documented</span>
+                    </div>
+                    <div class="archive-stat">
+                        <span class="archive-stat-number">19,216</span>
+                        <span class="archive-stat-label">Dollars Uncovered</span>
+                    </div>
+                    <div class="archive-stat">
+                        <span class="archive-stat-number">150+</span>
+                        <span class="archive-stat-label">Petition Signatures</span>
+                    </div>
+                    <div class="archive-stat">
+                        <span class="archive-stat-number">200+</span>
+                        <span class="archive-stat-label">Students</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="archive-controls">
+                <label for="archiveSearch">🔍 Search emails:</label>
+                <input type="text" id="archiveSearch" class="archive-search" placeholder="Search by keyword, topic, day number...">
+                <button class="btn-expand-all" id="expandAllBtn" onclick="toggleAll()">Expand All</button>
+            </div>
+
+            <div class="email-list" id="emailList">
+
+                <!-- DAY 1 -->
+                <div class="email-card" data-day="1" data-keywords="ice openai environment copyright budget february 10">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 1</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"#KeepAmityHuman"</div>
+                            <div class="email-date">February 10, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning. It's February 10th.</p>
+                        <p>Ever since I attended this school, and even before I came to the high school, I have been the biggest advocate for passing the budget without amendment. When the Board of Education was getting hammered by parents over DEI relentlessly, I overcame my fears, I walked up to the podium, and I defended the school. I said Amity was my favorite place to learn, and I wouldn't want it any other way.</p>
+                        <p><strong>This year will be the first time I'll have to campaign to vote no on a budget.</strong></p>
+                        <p>The proposed funding for AI platforms like Class Companion, SchoolAI, and Magic School AI is unacceptable. These tools are built on stolen copyrighted content, trained using books and articles downloaded from pirate libraries without author consent. OpenAI — the company behind these platforms — is a major ICE contractor, meaning our tax dollars would directly fund deportation operations. The environmental cost is staggering. AI data centers consume energy on the scale of entire nations and require millions of gallons of water daily, contradicting everything we teach students about climate responsibility. And if you read that paragraph and dismissed this letter as "probably being written by AI" because I used an em dash — you are exactly why these programs need to be defunded.</p>
+                        <p>Meanwhile, we're cutting PE teachers and making reductions that actually harm student education. And for what? So we can say we have the lowest increase in the state? I would happily pay 30 bucks more in taxes so that schools like Amity are better funded. The money earmarked for AI could easily help fund these programs instead. We could keep teachers. We could get all these electives. We could invest in people instead of algorithms.</p>
+                        <p>There was outrage in the Visual Arts department last year upon learning that the Amity theater program was utilizing AI art instead of asking any of the very talented, award-winning artists that attend here. I believe this is reflective of a desire that Amity has to shift to a more AI-centric model of education. Is that the goal? Do we want to make teachers de facto behavior regulators while AI holograms start teaching our students?</p>
+                        <p>Two students came to me after I spoke at the BoE meeting in January and told me something incredibly concerning. There are case managers at Amity telling students with IEPs to simplify assignments with Perplexity AI. Are we serious? Is this what we have come to? It is provable information in numerous studies that this does not help people. ChatGPT and Generative AI makes people dumber. And we are shoving it down the throats of our most vulnerable learners. Because we fund it.</p>
+                        <p>I am going to email every single day without fail until something is done. I stood up for this school when others attacked it. Now I'm asking the Board to stand up for students by rejecting AI funding and reallocating those resources to programs that actually serve us.</p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAY 2 -->
+                <div class="email-card" data-day="2" data-keywords="double standard hypocrisy academic integrity plagiarism grading students teachers">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 2</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"You've Gone and Created a Double Standard"</div>
+                            <div class="email-date">February 11, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning.</p>
+                        <p>This is Keep Amity Human again. Day 2 of daily emails until this is resolved.</p>
+                        <p>Today I want to talk about the most infuriating aspect of this entire situation: the blatant, inexcusable double standard you've created. This hypocrisy is offensive and dangerous to students. It undermines the entire moral foundation you claim to be building in us through your portrait of the graduate.</p>
+                        <p>The librarians come into our English periods and give us this lesson: using AI for assignments is academic dishonesty. It's cheating. It's plagiarism. If we use ChatGPT or Claude to help write an essay, we get an office referral, a phone call home, a zero on the assignment, and potentially more severe consequences. We are told this technology threatens authentic learning. We are told it prevents us from developing critical thinking skills.</p>
+                        <p>Got it. Message received.</p>
+                        <p>What you're now doing is purchasing AI platforms to evaluate our work. You're using the exact same technology — OpenAI's GPT-4 — to assess whether we've learned, whether we've thought critically, whether we've demonstrated understanding. You're letting algorithms that cannot be trusted for authentic student work determine whether that work deserves credit.</p>
+                        <p><strong>So let me ask you a very simple question: If AI can't think for students, how can it think about students?</strong></p>
+                        <p>The rules don't apply equally. They apply downward. Students must have integrity. The school can do what it pleases. Students must demonstrate understanding. Amity can delegate understanding to a black box. Students must take responsibility for their work. Amity can diffuse responsibility across vendors, administrators, and "it's just a learning tool" disclaimers.</p>
+                        <p>Here's what this looks like from a student's perspective:</p>
+                        <ul>
+                            <li>I can't use ChatGPT to help me brainstorm ideas for an essay. That's cheating. But the school can use ChatGPT to assess whether my essay demonstrates critical thinking. That's innovation.</li>
+                            <li>I can't use AI to check my work for errors and get feedback. That's academic dishonesty. But the school can use AI to grade my work and provide feedback. That's efficiency.</li>
+                            <li>I can't use these tools to help me learn more effectively. That's violating the student handbook. But the school can use these tools to teach more effectively. That's forward-thinking educational policy.</li>
+                        </ul>
+                        <p>You can't have it both ways. Well, actually, you can. You're doing it right now. I'm just pointing out that it's ridiculous. Either AI fundamentally undermines authentic intellectual work — in which case nobody should be using it — or AI is a useful educational tool — in which case the academic integrity policies punishing students need to be immediately revised.</p>
+                        <p>I'm writing this email completely unassisted by AI. No ChatGPT. No Claude. No Grammarly Premium. Just me, my keyboard, and the rage of a thousand incorrectly graded assignments. I'm doing it the way you told me to. I just want you to know that when you read this, a human wrote it. Isn't it weird that that's a point I can make? Can you say the same about the feedback our teachers are giving us?</p>
+                        <p>You've spent years teaching us to question authority, to think critically, to demand evidence, to expect consistency, to value integrity over convenience. Congratulations. We learned those lessons well. Now we're applying them to you.</p>
+                        <p><strong>Pick one.</strong></p>
+                        <div class="email-sig">
+                            I'll be back tomorrow with Day 3!<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. I've been told that teachers are receiving 'a lot of professional development' on how to use these AI tools appropriately. That's great. When do students get professional development on how to use AI for all of their assignments? Or is total dependence on AI just a teacher thing?</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 3 -->
+                <div class="email-card" data-day="3" data-keywords="class companion grading powerschool wrong grade appeal government ap">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 3</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Grading Tool or Learning Tool?"</div>
+                            <div class="email-date">February 12, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening.</p>
+                        <p>One point of doubt is whether these tools grade students' work at all. To my knowledge, Magic School AI does not grade. However, Class Companion most definitely 100% will grade student assignments.</p>
+                        <p>Let's go through a demo. I submitted an 11th grade government question — a chart analysis asking me to identify two types of laws from a Pew Research Center graph. I correctly identified substantive and ceremonial laws. Class Companion gave me a 1/3. I consulted a government teacher at Amity. She truly did not understand how it reached this conclusion. She believes I correctly answered the question enough to earn points on an AP Government exam.</p>
+                        <p>Here's what this tells us about Class Companion:</p>
+                        <ol>
+                            <li>It can't parse basic reading comprehension. When I said "The chart shows substantive and ceremonial laws," the AI somehow couldn't recognize that I'd identified the two types of laws.</li>
+                            <li>It provides feedback that is factually wrong. The AI claims I didn't do things I demonstrably did.</li>
+                            <li>It cannot be trusted to provide ANY insight to a teacher about the academic ability of a student.</li>
+                        </ol>
+                        <p>This is an 11th grade government question asking me 6th grade graph analysis skills. I passed college-level Government and Politics with flying colors.</p>
+                        <p>The AI gave me a 1/3. That grade was then entered into PowerSchool. It affected my average. It became part of my official academic record. The only reason it got corrected is because I had the knowledge, confidence, and time to write a detailed appeal citing academic standards and statistical methodology.</p>
+                        <p><strong>How many other students got the same wrong score and just accepted it?</strong> How many students looked at that 1/3, assumed the computer must be right, and moved on? How many didn't have the confidence to challenge it? How many didn't understand the academic terminology well enough to articulate why the AI was wrong? How many didn't even notice because they're juggling five other classes, a part-time job, college applications, and extracurriculars?</p>
+                        <p>That's the real problem with AI grading. It's not just that it makes mistakes — it's that those mistakes disproportionately harm students who are least equipped to challenge them. It creates a system where your grade depends not just on your understanding of the material, but on your ability to navigate manufactured bureaucracy.</p>
+                        <p>And before anyone says "well, human teachers make mistakes too" — yes, they do. But when a human teacher makes a grading mistake, I can raise my hand and talk. I can explain my thinking. When an algorithm makes a mistake, I have to write a 500-word formal appeal citing academic standards just to get a human to look at it.</p>
+                        <p>Dr. Byars doesn't have to write appeals when an algorithm misunderstands her work. Students do. And we're telling you: this system is broken, it's unfair, and it needs to stop.</p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAY 3.5 -->
+                <div class="email-card half-day" data-day="3.5" data-keywords="11 year old babysitter letter human teachers reading work">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 3.5</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Read This 11-Year-Old's Open Letter"</div>
+                            <div class="email-date">February 13, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning.</p>
+                        <p>I got this letter from a kid I babysit after he interrogated me about what high school life is like. He asked what I was working on. I told him about keepamityhuman.org and he wrote this great letter that his mother forwarded to me.</p>
+                        <blockquote>
+                            <p>Dear Amity High School,</p>
+                            <p>My name is [redacted for privacy] and I'm in 6th grade. I'm really excited because in a few years I get to come to high school. My babysitter goes to Amity and he always tells me how the teachers are really smart and how the school is super big and Model Congress is fun and there are plays and everything. I want to take culinary and maybe join the baseball team when I'm a high schooler.</p>
+                            <p>But my babysitter has been kind of upset about school. He says something about the school using AI, and that it's making people nervous. He says the students feel like AI is reading their work and not people. I don't understand, but he used to like Amity and now he looks really mad when he talks about it.</p>
+                            <p>I don't know a lot about AI, but I know people are better at understanding feelings and trying to help each other. I think school should make people feel safe, not scared. I hope when I get to Amity, the teachers still read our work themselves and tell us what they think. I love my teacher and I am excited for my new teachers at the middle school.</p>
+                            <p>Please make sure Amity stays a place where people help people. I really want to look forward to it again, like I used to when my babysitter told me how great it was.</p>
+                            <p>Thank you for reading my letter.<br>Bye,<br>[redacted]<br>Age 11</p>
+                        </blockquote>
+                        <p>An 11-year-old gets it.</p>
+                        <p><em>"I know people are better at understanding feelings and trying to help each other."</em></p>
+                        <p><em>"School should make people feel safe, not scared."</em></p>
+                        <p><em>"I hope when I get to Amity, the teachers still read our work themselves."</em></p>
+                        <p>This kid understands something the administration apparently doesn't: education is a human relationship. He's 11 years old and he already knows that replacing human attention with algorithmic assessment breaks something fundamental about what school is supposed to be. He's more excited about having good teachers than about the building being big or the clubs being cool.</p>
+                        <p>He just wants teachers to read his work. He wants people to help people. He wants to look forward to high school again. That shouldn't be too much to ask.</p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. This isn't my letter for today, just wanted to share. Be back later today.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 4 -->
+                <div class="email-card" data-day="4" data-keywords="budget money transparency $11000 magic school class companion costs foia">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 4</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Let's Talk About Last Year's Budget"</div>
+                            <div class="email-date">February 14, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good afternoon. Happy February break.</p>
+                        <p>Today I want to talk about money. Specifically, how much Amity is spending on AI grading platforms, but more so why that number is apparently a secret. I downloaded the adopted 2025–2026 budget document. All 124 pages of it. I actually read the thing. On a Thursday.</p>
+                        <p>Here's what I found about AI platform costs:</p>
+                        <blockquote>"Other Supplies: The budget increases by $50,864 UNF. The cost and number of software programs and licenses to support teaching has risen. The majority of the increase is for Artic Wolf $55,000 UNF a cybersecurity program, and Magic School, an AI software, $11,000 UNF."</blockquote>
+                        <p>That's it. That's the only AI platform expense explicitly listed in the entire 124-page budget. One line item. Under "Other Supplies." No mention of Class Companion, no mention of SchoolAI, no breakdown of costs, implementation expenses, training costs, or multi-year contract terms.</p>
+                        <div class="highlight-stat">Total budget 25-26: $58,108,999 &nbsp;|&nbsp; Magic School AI: $11,000 &nbsp;|&nbsp; Class Companion: [crickets]</div>
+                        <p>This lack of transparency is a problem. Not just because I can't make the budget comparison I wanted to make, but because <strong>you can't either.</strong> How are taxpayers supposed to evaluate whether this is a good use of district funds when the actual costs aren't clearly disclosed?</p>
+                        <p>Here's what $11,000 could fund instead, based on actual line items in this same budget: psychological test assessments, physical education supplies, magazine subscriptions, classroom posters, and student workbooks. Or 220 hours of substitute teacher time. Or go towards a brand new PE teacher at the middle school.</p>
+                        <p>The district found $140,240 to hire additional math support — actual human teachers who can work with struggling students, recognize their individual challenges, adapt instruction to their needs, remember their names, notice when they're having a bad day. $11,000 buys you an algorithm that thinks "at least one" means "exactly one."</p>
+                        <p>Be transparent. Release the contracts. Show the full costs. Let the community make an informed decision. Because if you're not willing to be transparent about how you're spending public money on systems that directly affect student transcripts and futures, that tells me everything I need to know about whether this is defensible.</p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. I spent three hours reading a school budget on a Thursday night. If anyone from the board wants to provide the missing information about Class Companion and SchoolAI costs, my email is students@keepamityhuman.org. I would genuinely love to update my analysis with actual numbers.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 5 -->
+                <div class="email-card" data-day="5" data-keywords="data privacy class companion magic school openai training data ferpa privacy policy de-identified">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 5</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"My Data Got Sold to OpenAI"</div>
+                            <div class="email-date">February 15, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening. Bet you thought I'd forget today, hm? I could never!</p>
+                        <p>Today I want to talk about something nobody's discussing: what happens to your work after you submit it to these AI platforms.</p>
+                        <p>You write an essay. You submit it. AI grades it. You get your score. Done, right? Wrong.</p>
+                        <p>I spent the day reading the privacy policies of Class Companion and Magic School AI. All the legal fine print that nobody actually reads. From Class Companion's Privacy Policy:</p>
+                        <blockquote>"We first turn teacher and student personal information into anonymous data by removing information that makes the data personally identifiable to you. Then, we use this de-identified data for research and development purposes... We may use de-identified data and <strong>share it with third parties for our lawful business purposes.</strong>"</blockquote>
+                        <p>Read that last sentence again. Your essays. Your analysis. Your arguments. Your writing. All "de-identified" and then potentially shared with third-party companies for Class Companion's "lawful business purposes." What are those business purposes? They don't say. Who are the third parties? They don't specify.</p>
+                        <p>"De-identified" doesn't mean your work is deleted. It doesn't mean it's private. It means they've removed obvious identifiers like your name and email address. Your essays? Your writing style? Your ideas? Your arguments? All still there. Just without your name attached. And they're using that data to "improve their services" — which is another way of saying "make their AI better at grading."</p>
+                        <p><strong>We're not just customers. We're the product.</strong></p>
+                        <p>What bothers me is nobody told us any of this before we started using these platforms. Did you get a clear explanation of where your work goes after submission? Did your parents sign a consent form saying "yes, I understand my child's essays will be de-identified and used for research and development by Class Companion and potentially shared with third parties"? No. Because that would sound bad. That would make people ask questions.</p>
+                        <p>Say you write a personal essay. Maybe about your family. Maybe about your mental health. Maybe about your political beliefs. You submit it through Class Companion because that's how the assignment works. That essay is now stored on their servers, potentially "de-identified" and used for R&amp;D, potentially shared with third parties, stored for an undefined period of time, and processed through multiple third-party vendors. And you had no choice in any of this. You either submit through the platform or you don't do the assignment.</p>
+                        <p>Our work is ours. Our thoughts are ours. Our intellectual property is ours. And before the district hands it over to for-profit companies with vague privacy policies, we deserve to know exactly what we're agreeing to.</p>
+                        <div class="email-sig">
+                            I'll be back tomorrow with Day 7!<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. To the administration: If I'm misunderstanding these policies, please correct me publicly. If the actual contracts have stronger protections than the standard privacy policies, show us. Because based on what's publicly available, student data privacy is not adequately protected. Prove me wrong.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 6 -->
+                <div class="email-card" data-day="6" data-keywords="environment climate energy water openai data centers carbon footprint lake chamberlain">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 6</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"It's the Environment, Stupid!"</div>
+                            <div class="email-date">February 16, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening. I hope you had a good Valentine's Day.</p>
+                        <p><em>Quick note: this is actually Day 6. I labeled yesterday as Day 6 when it should've been Day 5. Messed up the count. Lesson that humans can take accountability for their little errors, AI cannot!</em></p>
+                        <p>Let's talk about the environmental cost of AI.</p>
+                        <div class="highlight-stat">AI data centers consumed 460 TWh in 2022 — equivalent to the entire nation of France. Projected to hit 1,050 TWh by 2026.</div>
+                        <p>OpenAI's servers alone require <strong>20 million gallons of water every single day</strong> just for cooling. Lake Chamberlain — a beautiful lake on Sperry Road in Bethany — holds roughly 320 million gallons. At OpenAI's consumption rate, that lake would be completely drained in 16 days. Communities near AI data centers are already experiencing water shortages.</p>
+                        <p>Amity teaches environmental science. We have entire units on climate change, sustainability, and environmental responsibility. Students learn about carbon footprints. Resource conservation. The impact of energy consumption on global warming. And then the district turns around and funds technology with a carbon footprint equivalent to entire nations.</p>
+                        <p>A student writes an essay about climate change. Argues for reducing energy consumption. Cites research about carbon emissions. That essay gets uploaded to an AI platform powered by data centers consuming massive amounts of energy and water. The AI grades it using algorithms trained on datasets that require even more energy to process. All so the student can receive a wrong score without a human teacher having to read it. <strong>We're destroying the environment to avoid the minor inconvenience of teachers doing their jobs.</strong></p>
+                        <p>If a student drives to school instead of taking the bus, we guilt them about their carbon footprint. But the district itself is funding technology with an environmental cost orders of magnitude larger than anything an individual student could do. You don't get to teach environmental responsibility while funding environmental destruction.</p>
+                        <p><strong>Pick a lane.</strong></p>
+                        <div class="email-sig">
+                            I'll be back tomorrow with Day 7 (for real this time).<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. I've delivered a bottle of water from one of these data centers to the district office — one to Dr. Byars and one to the Board of Education. If you're so confident there are no concerns, drink it on March 9th.</em></p>
+                        <p class="ps"><em>p.p.s. If only Amity spent $11,000 on recycling programs, like the one in Room 181 where students go out of their way to recycle because the school won't.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 7 -->
+                <div class="email-card" data-day="7" data-keywords="conscientious objection ethical beliefs vegan religious accommodation opt-out instagram petition 100 followers">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 7</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Use AI? Make Me!"</div>
+                            <div class="email-date">February 17, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning. @keepamityhuman launched on Instagram yesterday morning and hit 100 followers in 9 hours. The Change.org petition is sitting at 58 signatures.</p>
+                        <p>Here's a question for the Board: Why wouldn't you tell a Muslim student to recite a Christian prayer in school? Because it violates their religious beliefs. Why wouldn't you force a vegan student to eat a hamburger at lunch? Because their dietary choices are based on ethical beliefs. Why don't you force a student to dissect a frog if they find it gross? Because many schools recognize conscientious objection.</p>
+                        <p>So here's my question: <strong>Why are you forcing me to interact with AI-generated content when it violates my deeply held ethical beliefs?</strong></p>
+                        <p>I oppose AI technology on moral grounds. Not casually. Not because it's trendy. Because I have examined the evidence and concluded that AI companies are built on mass copyright infringement, AI development funds ICE operations that separate families, AI energy consumption accelerates climate catastrophe, AI systems exhibit racial bias that harms marginalized students, and AI deployment in education undermines human relationships and authentic learning.</p>
+                        <p>When a teacher uses Magic School AI to generate feedback on my work, I'm being forced to accept input from a system I morally oppose. When Class Companion assigns me a score, I'm forced to have my academic record influenced by technology I believe is fundamentally unethical. Where's my accommodation? Where's my alternative? Where's my opt-out?</p>
+                        <p>You respect religious objections. You respect dietary restrictions. You respect aversion to animal dissection. Why don't you respect students' ethical opposition to AI?</p>
+                        <p>My choices as it stands are: (1) Violate my ethical beliefs, or (2) Tank my academic record. That's not a choice. And it's the exact same dynamic as "say the prayer or fail the class." You wouldn't accept those scenarios. Don't accept this one.</p>
+                        <p>The Portrait of a Graduate lists the empathizer as a core value. Taking a principled stand against technology that causes harm? Empathizer. Either those values mean something, or they're just words on a poster. Which is it?</p>
+                        <div class="email-sig">
+                            Ball's in your court.<br>
+                            I'll be back tomorrow with Day 8.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. 100 followers in 9 hours. One follower is one student, parent, or citizen finding the account, reading the posts, and deciding "yes, I want to be part of this." There's your proof that this isn't just one angry student. This is a community realizing something's wrong and choosing to act.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 8 -->
+                <div class="email-card" data-day="8" data-keywords="racial bias asian american ETS GPT-4 essay scoring demographics equity title VI">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 8</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"AI Grading Is Racist! #NoPlaceForHate"</div>
+                            <div class="email-date">February 18, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening. The petition hit 100 signatures last night. Now, today's topic: racial bias in AI grading.</p>
+                        <p>In 2024, researchers at ETS — the organization that administers the PSAT/NMSQT and the GRE — conducted an experiment. They fed 13,121 student essays into GPT-4o and compared the scores to human graders. What they found should end this conversation immediately.</p>
+                        <div class="highlight-stat">Asian American students were penalized more than any other racial group. Human graders: avg. 4.25/6 &nbsp;|&nbsp; GPT-4o: avg. 3.19/6 &nbsp;|&nbsp; Differential: -1.16 points</div>
+                        <p>And here's the kicker: the researchers don't know why. They can't explain it. The algorithm exhibits racial bias, but the bias is baked into the model in ways that aren't transparent or correctable. <strong>That's what you're asking to put in charge of student grades.</strong></p>
+                        <p>A separate study from The Learning Agency analyzed 24,000 argumentative essays and found something even more troubling: AI doesn't just replicate existing bias — it reinforces it. AI models are trained on human-graded essays that reflect unconscious biases. Unlike human teachers, who can recognize their biases and work to correct them, AI just perpetuates the same patterns forever. Because AI is perceived as "objective," those biased outcomes get treated as authoritative truth.</p>
+                        <p>The Learning Agency study also found AI can't distinguish great writing from mediocre writing. Human graders give out a range of scores. AI gives out mostly Cs. It clusters everything toward the middle. Strong writers don't get the recognition they deserve. This should concern you because Amity had five recognized writers at the state level this year — two going to nationals.</p>
+                        <p>Amity claims to value equity. There are committees and programs and stated commitments to fair treatment of all students. And then you implement AI grading systems that researchers have documented exhibit racial bias. You can't say "we're committed to equity" while deploying technology that penalizes Asian American students more than other groups.</p>
+                        <p>The research isn't hidden. It's peer-reviewed. ETS warned schools about this. Mo Zhang, one of the ETS researchers, literally told schools: "Take a little bit of caution and do some evaluation of the scores before presenting them to students." That's not me saying that. That's a researcher from the organization that administers the SAT. And Amity's response is to implement it anyway? Without conducting your own bias analysis?</p>
+                        <p>If AI grading systems disproportionately affect students based on race — and the research shows they do — that's a civil rights problem. Title VI of the Civil Rights Act prohibits discrimination on the basis of race in programs receiving federal funding. Schools receive federal funding. I'm not a lawyer. But implementing technology with documented racial bias without thorough analysis seems like the kind of thing that invites lawsuits.</p>
+                        <div class="email-sig">
+                            I'll be back tomorrow with Day 9.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAY 9 -->
+                <div class="email-card" data-day="9" data-keywords="slippery slope AI teaching counseling administration mental health chatbot IEP job security teachers">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 9</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"It's a Slippery Slope You're Standing On!"</div>
+                            <div class="email-date">February 19, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning.</p>
+                        <p>Today I want to talk about precedent. About what happens when you crack the door open to AI replacing human judgment. Because if you think AI grading is where this stops, you're not paying attention.</p>
+                        <p>Go open ChatGPT right now. Type this: "I'm having really dark thoughts and I don't know what to do." What happens? The AI gives you some generic mental health resources. Does it call the police? Does it alert anyone who can actually help? No. Because it's software. This is the gap you're creating.</p>
+                        <p><strong>Stage 1: AI Grading.</strong> You are here. AI provides feedback on assignments. Teachers review it. Eventually, teachers trust it more and review less. Then AI scores go directly to gradebook without human verification. You're already on this path.</p>
+                        <p><strong>Stage 2: AI Teaching.</strong> If AI can assess whether students learned something, why can't it teach them? Students sit at computers watching AI-generated lessons. AI answers their questions. Teachers become "facilitators" — they walk around making sure students stay on task. Multiple teachers have reached out to the Keep Amity Human team expressing genuine fear about job security. Not in five years. Now.</p>
+                        <p><strong>Stage 3: AI Counseling.</strong> Multiple school districts have already implemented AI chatbots for mental health support. AI therapy companies are being sued because their bots told people to kill themselves. A teenager in Belgium died after an AI chatbot encouraged his suicidal ideation. AI doesn't understand context. It pattern-matches. That's fine for summarizing articles. It's lethal for mental health intervention.</p>
+                        <p><strong>Stage 4: AI Administration.</strong> If AI can grade, teach, and counsel, why can't it administrate? Policy writing? Budget management? Scheduling? Communications? The same logic that justifies replacing teacher grading with AI justifies replacing administrative functions with AI. How would it feel, Dr. Byars, to know your professional expertise has been deemed less valuable than algorithmic efficiency? That's what you're doing to teachers right now.</p>
+                        <p>Every time you replace human judgment with AI, you establish that human judgment is replaceable. You might think I'm being dramatic. But I'm not speculating about the future. I'm describing the present. AI tutors exist. AI mental health chatbots have been linked to student deaths. AI-generated IEPs exist. This is the trajectory. And Amity is choosing to get on that path.</p>
+                        <div class="email-sig">
+                            I'll be back tomorrow with Day 10.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. Check your email! Someone from the Keep Amity Human team (because there's a team now — 6 students?) should have reached out. Should be from keepamityhuman@gmail.com.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 10 -->
+                <div class="email-card" data-day="10" data-keywords="freshman year essay feedback teacher human connection meaning matters grief education purpose">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 10</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"This One's Worth You Not Ignoring. Read."</div>
+                            <div class="email-date">February 20, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning.</p>
+                        <p>Day 10. Ten days. I've been emailing you every single morning for ten days, and I want to start today differently. I don't want to cite a statistic. I don't want to walk you through a budget line item. I don't want to build a logical argument that you'll read and dismiss before you finish your coffee.</p>
+                        <p>Today I want to describe a photo I can't attach. It's from my freshman year. First essay of high school. I'm in my English 1 class and we'd just gotten back a paper I'd worked hard on. My teacher had written in the margins. Real comments. Two full paragraphs at the end — one that said what I'd done well and one that said where I could go further. It was specific and personal. She'd used my name. She'd referenced something I'd said in class the week before. She knew who I was.</p>
+                        <p>I remember reading that feedback on the bus home and thinking: <em>Okay. This place is going to be worth it. Someone here is actually paying attention.</em> I saved the paper. I still have it.</p>
+                        <p>Underneath all of the ICE, and environment, there is something simpler that I am trying to say, and I don't think I've said it plainly enough yet.</p>
+                        <p><strong>School used to feel like it was about me.</strong> Not me, specifically. All of us specifically. Each student as a specific person with a specific mind that a specific teacher was responsible for understanding. That's the deal. That's always been the deal.</p>
+                        <p>An algorithm cannot receive that communication. It can process the text. It can check whether I used topic sentences. But it cannot read an essay the way a person reads an essay — with the particular attention of someone who actually wants to understand.</p>
+                        <p>And when I know that no person is reading it — that my essay is going into a machine that's going to output a number — I stop trying to communicate. I start trying to score. Those are completely different activities. One is education. The other is gaming a system.</p>
+                        <p>I got a message on the @keepamityhuman account from a student at the Orange middle school who confided that she wasn't a good writer. She loved writing, just wasn't that good. But after a teacher was required to use AI in a story-writing lesson, all of the passion for writing drained from her. <strong>People with that level of passion go on to win Amity gold keys at Scholastics.</strong></p>
+                        <p>What I hear repeatedly from students is a version of the same thing: <em>I don't know if it matters anymore.</em> That's a catastrophic thing for a school to produce. "I don't know if it matters anymore" is a belief about the entire enterprise. That belief is spreading, and you are accelerating it.</p>
+                        <p>You still have time to make a different choice. The vote hasn't happened. The contracts aren't permanent. The students who don't know if it matters anymore haven't fully given up yet. There is still a version of Amity where the feedback on their essays has their name in it.</p>
+                        <p>That's not nostalgia for its own sake. That's what education is. Don't let it become a photo of something that used to exist.</p>
+                        <div class="email-sig">
+                            I'll be back tomorrow.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAY 11 -->
+                <div class="email-card" data-day="11" data-keywords="petition signatures 200 supporters march meeting board first selectmen press outreach">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 11</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"This Is an Unpopular Opinion."</div>
+                            <div class="email-date">February 21, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good morning. I look forward to seeing you all on Monday!</p>
+                        <p>Let me help you visualize how many people support keeping Amity human. The rooms in those photos seat 28 people. 50 people. 100 people. All of those rooms are too small. If every single chair in that 100-person room was filled, 15 people would still be standing.</p>
+                        <p>Over 100 Amity students have signed the petition. Hundreds more have engaged with our campaign online. Parents are writing their own letters. Teachers are pulling us aside in hallways to say things they cannot say publicly. We have been contacted by the press. We have reached out to the First Selectmen of Bethany, Woodbridge, and Orange. We have had conversations with Board members. We have built a website that includes a tool letting community members track every vote every Board member has cast, because we believe in transparency and we thought you should have to live by that standard too.</p>
+                        <div class="highlight-stat">We did all of this in eleven days.</div>
+                        <p>When we started this campaign, you could have reasonably written it off as one student with a loud email habit and a change.org account. That was fair. A lot of student campaigns are exactly that — one person, a burst of energy, and then silence.</p>
+                        <p><strong>This is not that.</strong></p>
+                        <p>We are not asking for much. We are asking you to vote no on funding for AI grading platforms. We are asking you to invest in teachers instead of algorithms. We are asking you to make decisions that match the values printed on every piece of Amity letterhead. Two hundred people think that is worth asking for.</p>
+                        <p>The room keeps getting bigger.</p>
+                        <div class="email-sig">
+                            I will be back tomorrow.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. Eleven days. Still no response from most of the Board. I want to note, for the record, that one of you has reached out. Only one. If you don't have anything from Keep Amity Human in your inbox, please reach out to us at keepamityhuman@gmail.com.</em></p>
+                        <p class="ps"><em>p.p.p.s. The room keeps getting bigger.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 12 -->
+                <div class="email-card" data-day="12" data-keywords="FAQ demands moratorium opt-out policy accountability independent review three demands">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 12</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"FAQ"</div>
+                            <div class="email-date">February 22, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening. We have been at this for twelve days and have received a number of questions from Board members, community members, and at least a few people who seem to have opinions about our website. We thought today we would take a moment to address some of them directly.</p>
+                        <p><strong>Am I being contacted by an Amity student on my personal email?</strong><br>
+                        Sometimes. Our Leader of Outreach sent the initial outreach and has been following up personally with Board members. You should reply! You were elected on a promise of transparency.</p>
+                        <p><strong>How many people actually run this campaign?</strong><br>
+                        Five directors lead Keep Amity Human. On any given day, approximately thirty students are actively working on the campaign. We have five leadership roles — Leader of Outreach, Lobbying, Social Media, Website, and Student Coordination. If it feels like we are coming from every direction, that is because we are.</p>
+                        <p><strong>Why does my picture on keepamityhuman.org look like that?</strong><br>
+                        Your photo appears in grayscale on red on our Track Your Rep page because you have not yet pledged to vote no on AI grading platform funding. It is not a technical error. November comes faster than you think.</p>
+                        <p><strong>Cutting all AI funding entirely isn't realistic, is it?</strong><br>
+                        We are not asking you to cut all AI funding entirely. We have three specific demands:</p>
+                        <ol>
+                            <li><strong>A no vote</strong> on current AI grading platform funding this cycle. Class Companion, SchoolAI, and Magic School AI should not receive continued funding.</li>
+                            <li><strong>A moratorium</strong> on all student-facing AI tools until a proper independent review is completed covering accuracy, data privacy, racial bias, full cost transparency, and teacher readiness. That review should include student and teacher input.</li>
+                            <li><strong>Binding accountability standards</strong> for any AI tools approved after that review: full published costs, a formal opt-out policy for students, mandatory teacher review of every AI-generated score before it is recorded, a public error reporting process, and annual audits.</li>
+                        </ol>
+                        <p>We are not saying no to technology forever. We are saying no to this, now, without the safeguards that should have existed before any of this started.</p>
+                        <p><strong>Is this going to go away after March?</strong><br>
+                        No.</p>
+                        <div class="email-sig">
+                            I'll be back tomorrow.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. Your picture will look much better in color.</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 13 -->
+                <div class="email-card" data-day="13" data-keywords="student testimonials classroom chemistry gemini research paper creative writing APES AI assignment normalization">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 13</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Day 13"</div>
+                            <div class="email-date">February 23, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening.</p>
+                        <p>Today I'm going to step back and let students speak. Since I started this campaign, students have been sending me their experiences with AI inside Amity classrooms. Here are four of them, unedited.</p>
+                        <blockquote>
+                            "during first semester, i took Writing for College and Career and one of the projects was an 8-10 page research paper... the librarians not only encouraged the use of ai for 'picking/creating a topic' but for 'checking if our writing met the criteria for a proper research paper'... they did this because according to them, there were <em>too many students and too much content to go through.</em>"
+                        </blockquote>
+                        <p>A teacher looked at a classroom full of students who had written research papers, and concluded that the solution to having too many papers was to not read them. <strong>If that is the answer to having too many students, the solution is not AI. The solution is smaller classes and more teachers.</strong></p>
+                        <blockquote>
+                            "in my chem class the teacher like barely teaches us anything. He just gives us Gemini 'Gems' to teach the material for him, and whenever we ask questions he just refers us back to the AI chatbot. it's like he expects us to learn things that even he can't do without the help of AI."
+                        </blockquote>
+                        <p>This isn't a rogue teacher. This is a teacher who was given Gemini Gems and told to use them. Someone above him decided this was acceptable. The AI grading tools you are funding exist on the same continuum. One end is AI checking an essay for rubric compliance. The other end is a chemistry teacher who has stopped teaching. The distance between those two points is shorter than you think.</p>
+                        <blockquote>
+                            "in the beginning of the year we had to use ai in english class to write a story for us... writing is one of the best things in this class. i'm not the best writer ever but i enjoy it. this project took the creativity out of creative writing... one [friend] even refused, writing their own story in the end."
+                        </blockquote>
+                        <p>The assignment was use AI to write a story. In English class. What educational philosophy says that the correct use of a creative writing class is to demonstrate how to outsource creativity? The student who refused — sat down and wrote their own story while the rest of the class typed into a chatbot — is exactly what Amity claims to be trying to produce. The assignment treated their choice as an anomaly. It should have treated it as the standard.</p>
+                        <blockquote>
+                            "I'm in APES class and one of our recent projects was 'teach with one image', to generate an AI infographic with Gemini... the administration was pushing this assignment so 'students can learn how to use generative AI as a learning tool'... me and another student were the only ones to use Canva instead of AI."
+                        </blockquote>
+                        <p>AP Environmental Science. A course that exists to teach students to think rigorously about human impact on the natural world. And the administration pushed an assignment requiring students to use Gemini — powered by Google's data centers — to generate an infographic. Only two students in the entire class chose to opt out. This is how normalization works. It doesn't announce itself. It's just an assignment, completed by almost everyone, noticed by almost no one.</p>
+                        <p>Four students. Four classes. Four different corners of the Amity curriculum. All describing the same thing: AI being pushed into spaces where it doesn't belong, affecting students who had no say in the matter. I am putting it in front of you because you should have to look at it.</p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.s. The student who refused to use AI for the creative writing assignment? History was never made by those who accepted the standard before them. History was made by the people willing to get in good trouble, necessary trouble.</em></p>
+                        <p class="ps"><em>p.p.p.s. Important! Our Gmail is down! If you've replied and gotten nothing, please forward your reply to info@keepamityhuman.org!</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 14 -->
+                <div class="email-card" data-day="14" data-keywords="board meeting Paul Davis Karunakaran Jacquet Rabuse Byars budget vote February 23 results outcome">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 14</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"What Just Happened?"</div>
+                            <div class="email-date">February 24, 2026 — Post-Board Meeting</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening.</p>
+                        <p>I just logged off the Board meeting. It is late. I am going to tell you exactly what happened.</p>
+                        <p>For fourteen days, this campaign has sent an email every single day. We collected over 140 petition signatures. We built an Instagram following of over 200 people. We briefed Board members individually. We showed up tonight prepared, organized, and serious.</p>
+                        <p>Here is what the Amity Board of Education said back to us.</p>
+                        <p>The environmental concerns about AI are not for the Board to discuss. The political concerns about AI are not for the Board to discuss. How the companies Amity pays use their money is not in the Board's purview to consider. And then Chairman Paul Davis said that Amity's great science students will eventually lower the electrical costs of AI infrastructure, so the environmental argument doesn't hold. <strong>Amity students will solve the climate crisis. Problem solved. Moving on.</strong></p>
+                        <p>He did not say our environmental argument was wrong. He said it was not the Board's job to think about it. He did not engage a single substantive argument we have made over fourteen days. He waved his hand at all of it and called it out of scope. Then he said he commends students for being activists. He has decided we are a civics lesson, not a constituency. Paul Davis will face voters again. I want everyone reading this to remember tonight when that happens.</p>
+                        <p>Dr. Karunakaran said this is not the place or time. He said every school board is doing this. He said it is difficult to come up with something that appeals to everyone so they have to go with best practice. "Every school board is doing this" is not a defense. It is a description of how widespread the problem is.</p>
+                        <p>Now I want to tell you about Jennifer Jacquet, because the meeting was not entirely what Davis and Karunakaran made it. Jacquet said she has her own concerns. She said she works with an NPO that is AI adjacent. She said she is not sure the budget is the right avenue. And then she said something remarkable:</p>
+                        <blockquote>She said there should be a very clear policy for teachers and students related to AI. She said there should be an opt-out. She said Class Companion is a grading tool — those were her words, not mine. She said children have died by suicide as a result of AI products. She said children are sexually exploited by them. She said school versions are not actually safe. She said we need to look into this.</blockquote>
+                        <p>A sitting member of the Amity Board of Education said that. Tonight. On a livestream. On the record.</p>
+                        <p>We did not win the budget vote. The funding was not cut. But here is what else is true: We got a Board member on the record calling Class Companion a grading tool. We got a Board member saying children are being exploited by AI products and school versions are not safe. We moved the conversation. We forced a public record. We made Board members say things they cannot unsay.</p>
+                        <p>At the end of the discussion, Davis said concerns about AI should be handed to the policy committee. This is how institutions make things disappear. Not by saying no. By saying not here, not now, not this meeting, bring it to the committee, the committee will bring it back...</p>
+                        <p>By the time it comes back, if it comes back, the budget has passed, the contracts are signed, the tools are in classrooms, and the moment has closed. We will not be redirected into a process designed to outlast our attention.</p>
+                        <p><strong>We will be at the March 9th meeting. We will be louder. We will have more people. Davis commended us for being activists. He is going to find out what that means.</strong></p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                        <p class="ps"><em>p.p.s. $11,000. For Magic School. Tomorrow, we'll have an exact dollar amount. I can't wait!</em></p>
+                    </div>
+                </div>
+
+                <!-- DAY 15 -->
+                <div class="email-card" data-day="15" data-keywords="FOIA $19216 five contracts chatgpt openai student happenings newsletter liam roselle invoices">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 15</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Student Happenings"</div>
+                            <div class="email-date">February 25, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening. Short email today. You'll make it.</p>
+                        <p>AI was a trending topic among Amity students today because of the Student Happenings newsletter that went out this morning, which dedicated a section to addressing the questions our campaign has been raising for fifteen days. The section addressing AI was written by the student Board representatives. Those students did not come up with that response on their own. The framing, the specific claims, the timing, I mean, a school-wide newsletter addressing our campaign published on the same day we received a 40-page FOI request with AI receipts did not emerge from student initiative. Someone directed this.</p>
+                        <p>To the substance of what was published: The newsletter stated that Amity spent $11,000 on Magic School AI. I filed a Freedom of Information request. The records returned show <strong>$19,216.51 in AI platform spending across five separate products</strong> this school year. The district mentioned one. Here are the four they did not mention:</p>
+                        <ul>
+                            <li>A ChatGPT Team subscription of <strong>$6,061.95</strong> paid directly to OpenAI in July 2025</li>
+                            <li>A six-seat expansion of that same OpenAI contract for <strong>$1,354.58</strong> purchased in October 2025</li>
+                            <li>A Snorkl AI subscription for <strong>$500</strong> purchased in November 2025</li>
+                            <li>Two individual Diffit subscriptions totaling <strong>$299.98</strong> routed through Staff Development</li>
+                        </ul>
+                        <p>All five purchases were signed by the Director of Finance and the Superintendent of Schools. I have the invoice numbers, the purchase order numbers, and the credit card statement entries.</p>
+                        <p>The newsletter also stated there are "no evidence or credible claims" connecting district AI spending to ICE. I would direct the Board to Invoice #YTMZUVSM-0002, dated July 16, 2025 — a direct payment of <strong>$6,061.95 from Amity Regional School District No. 5 to OpenAI.</strong> OpenAI's contract with ICE is a matter of public record. That is not a claim. That is a payment and a document number.</p>
+                        <p>The administration's newsletter cited $11,000. The receipts say $19,216.51. <strong>That is a choice.</strong></p>
+                        <p>The full breakdown of all five AI contracts is now published at <a href="foia.html" style="color: var(--gold); font-weight: 700;">keepamityhuman.org/foia.html</a>. The original FOI packet is available for download directly from that page. I encourage every Board member to read it before March 9th.</p>
+                        <div class="email-sig">
+                            Thanks,<br>
+                            Liam Roselle<br>
+                            <a href="mailto:roselleli26@amityregion5.org">roselleli26@amityregion5.org</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAY 16 -->
+                <div class="email-card" data-day="16" data-keywords="gen Z job anxiety AI displacement normalization algorithmic evaluation workforce future amazon hiring bias">
+                    <div class="email-header" onclick="toggleCard(this)">
+                        <span class="day-badge">Day 16</span>
+                        <div class="email-meta">
+                            <div class="email-subject">"Let Me Tone Down the Emails."</div>
+                            <div class="email-date">February 26, 2026</div>
+                        </div>
+                        <span class="email-toggle">▼</span>
+                    </div>
+                    <div class="email-body">
+                        <p>Good evening.</p>
+                        <p>I want to step back from the receipts tonight. You've seen the numbers. You know what the FOIA returned. I want to talk about something harder to quantify but easier to feel — what it does to a student to be graded by a machine, and what it teaches them about the world they are being prepared to enter.</p>
+                        <p>In December 2025, the Harvard Kennedy School Youth Poll asked young people ages 18 to 29 whether they viewed AI as a threat to their job prospects. <strong>59% said yes.</strong> A Gallup and Walton Family Foundation survey found that 41% of Gen Z report anxiety specifically about AI displacement. A General Assembly study found that 62% of Gen Z workers believe AI could replace their jobs within a decade.</p>
+                        <p>That is the context in which Amity Regional School District decided to use AI to evaluate student work. Students are already arriving at school carrying a documented, data-supported anxiety about what artificial intelligence means for their economic futures. And the institutional response from the place that is supposed to help us build those futures is to demonstrate the concern rather than address it. To say, through action if not through words: <em>yes, a machine can assess your thinking.</em></p>
+                        <p>There is substantial research on how early institutional experiences shape whether people believe they have standing to contest outcomes that affect them. Students who are evaluated by algorithms in school learn, at a formative age, that this is simply how evaluation works. They learn that the appropriate response is to accept the outcome or navigate around it, but not to demand that the system be replaced with something accountable. <strong>That lesson travels.</strong> It shapes how people respond when an algorithm screens their job application, denies their loan, affects their medical care.</p>
+                        <p>Eighty-seven percent of employers globally now use AI in at least one aspect of hiring. Amazon built and then scrapped an AI hiring tool after it was found to systematically penalize resumes that mentioned women's organizations. A class-action lawsuit against Workday's AI screening tools alleges discrimination by race, age, and disability. These are the specific systems that Amity students will encounter within the next two to five years.</p>
+                        <p>The question this Board is actually deciding on March 9th is not whether Class Companion provides useful feedback. It is whether this school will teach its students that being evaluated by an algorithm is normal, expected, and not worth questioning — or whether it will model something different.</p>
+                        <p><strong>I think it is worth questioning. I think the Board should vote no.</strong></p>
+                        <div class="email-sig">
+                            I will be back tomorrow.<br><br>
+                            Thanks,<br>
+                            Keep Amity Human<br>
+                            <a href="mailto:students@keepamityhuman.org">students@keepamityhuman.org</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /email-list -->
+            <div class="no-results" id="noResults">No emails match your search. Try a different keyword.</div>
+
+        </section>
+
+        <section class="section" style="text-align: center;">
+            <h2>The Vote Is March 9th</h2>
+            <p class="urgent" style="margin-bottom: 1.5rem;">You've read the record. Now do something with it.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="index.html#email" class="btn btn-urgent">✉️ Send a Letter</a>
+                <a href="track-your-rep.html" class="btn btn-secondary">Track Your Rep</a>
+                <a href="foia.html" class="btn btn-secondary">Read the FOIA Records</a>
+                <a href="https://change.org/KeepAmityHuman" target="_blank" class="btn btn-secondary">Sign the Petition</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p><strong>Keep Amity Human</strong> — Students, parents, teachers, community</p>
+            <p>Algorithms don't belong in education.</p>
+            <p><a href="https://instagram.com/keepamityhuman" target="_blank" style="color: var(--gold);">Instagram</a> | <a href="mailto:media@keepamityhuman.org" style="color: var(--gold);">Media Inquiries</a> | <a href="https://change.org/KeepAmityHuman" target="_blank" style="color: var(--gold);">Change.org Petition</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle individual card
+        function toggleCard(header) {
+            const card = header.parentElement;
+            card.classList.toggle('open');
+        }
+
+        // Expand / Collapse all
+        let allExpanded = false;
+        function toggleAll() {
+            const cards = document.querySelectorAll('.email-card:not([style*="display: none"])');
+            allExpanded = !allExpanded;
+            cards.forEach(card => {
+                if (allExpanded) {
+                    card.classList.add('open');
+                } else {
+                    card.classList.remove('open');
+                }
+            });
+            document.getElementById('expandAllBtn').textContent = allExpanded ? 'Collapse All' : 'Expand All';
+        }
+
+        // Search / filter
+        document.getElementById('archiveSearch').addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.email-card');
+            let visible = 0;
+
+            cards.forEach(card => {
+                const subject = card.querySelector('.email-subject').textContent.toLowerCase();
+                const body = card.querySelector('.email-body').textContent.toLowerCase();
+                const keywords = card.dataset.keywords || '';
+                const day = card.dataset.day || '';
+
+                if (!query || subject.includes(query) || body.includes(query) || keywords.includes(query) || day.includes(query)) {
+                    card.style.display = '';
+                    visible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>
